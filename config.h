@@ -1,19 +1,19 @@
 
-#define PWD "/home/dionysus/.suckless/suckless-dwmblocks"
+#define UTILS "/home/dionysus/.suckless/suckless-dwmblocks/utils"
 
 //Modify this file to change what commands output to your statusbar, and recompile using the make command.
 static const Block blocks[] = {
 /*Icon*//*Command*//*Update Interval*//*Update Signal*/
-{"", PWD"/blocks/status-msg",       3,  0 },
-{"", PWD"/blocks/status-apps",      1,  0 },
-{"", PWD"/blocks/status-mail",      1,  0 },
-{"", PWD"/blocks/status-battery",   60, 0 },
-{"", PWD"/blocks/status-internet ", 1,  0 },
-{"", PWD"/blocks/status-volume",    1,  0 },
-/* {"", PWD"/blocks/status-cpubar",    1,  0 }, */
-{"", PWD"/blocks/status-cpu",       60, 0 },
-{"", PWD"/blocks/status-ram",       15, 0 },
-{"", PWD"/blocks/status-clock",     1,  0 },
+{"", UTILS"/status-msg",              3,    0 },
+{"", UTILS"/status-apps",             1,    0 },
+{"", UTILS"/status-mail",             300,  0 },
+{"", UTILS"/status-battery",          1,    0 },
+{"", UTILS"/status-internet",         1,    0 },
+{"", UTILS"/status-volume",           1,    0 },
+{"", UTILS"/status-cpubar",           1,    0 },
+{"", UTILS"/status-cpu",              3,    0 },
+{"", UTILS"/status-ram",              3,    0 },
+{"", UTILS"/status-clock",            1,    0 },
 };
 
 //sets delimeter between status commands. NULL character ('\0') means no delimeter.

@@ -1,0 +1,35 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import re
+import os
+import utils
+
+NETWORK_PATH = "/sys/class/net/wlan0"
+
+icons = {
+    "up": "󰖩",
+    "down": "󰖪",
+    "0x1003": "📡",
+    "trojan on": "",
+    "trojan off": "",
+}
+
+trojan_status = "trojan on" if utils.in_running(pattern="trojan") else "trojan off"
+network_strength = ""
+network_flags = utils.read_file(os.path.join(NETWORK_PATH, "flags")).strip()
+network_operstate = utils.read_file(os.path.join(NETWORK_PATH, "operstate")).strip()
+wireless = utils.read_file("/proc/net/wireless").strip()
+m = re.match(r"^\s*wlan0:\s*[\d]*\s*([\d]{1,3}).", wireless.split("\n")[-1])
+if m:
+    network_strength = int(m.group(1))
+
+if network_operstate == "up":
+    res = "{} {} {:2.0f}%".format(icons.get(trojan_status, ""), icons.get(network_operstate, ""), network_strength)
+else:
+    if network_flags == "0x1003":
+        res = "{} {} {}".format(icons.get(trojan_status, ""), icons.get(network_flags, ""), icons.get(network_operstate, ""))
+    else:
+        res = "{} {} {}".format(icons.get(trojan_status, ""), icons.get(network_flags, ""), icons.get(network_operstate, ""))
+
+print(res)

@@ -1,0 +1,15 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import psutil
+
+coretemp = psutil.sensors_temperatures().get("coretemp")
+coretemp = [] if coretemp is None else coretemp
+coretemp = [x.current for x in coretemp]
+temp_avg = sum(coretemp) / len(coretemp)
+
+cpu_percent = psutil.cpu_percent(interval=0.1)
+
+res = "{:.0f}C {:2.0f}%".format(temp_avg, cpu_percent)
+
+print(res)

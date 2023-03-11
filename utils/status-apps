@@ -1,0 +1,23 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import utils
+
+icons = {
+    "ncmpcpp": "🎻",
+    "netease-cloud-music": "🎻",
+    "ffmpeg": "",
+}
+
+apps = [
+    "ncmpcpp",
+    "netease-cloud-music",
+    "ffmpeg",
+]
+
+iconslist = [icons.get(app, "") for app in apps if utils.in_running(pattern=app)]
+iconslist = [x for x in iconslist if x]
+
+res = "".join(iconslist)
+
+print(res)

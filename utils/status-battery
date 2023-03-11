@@ -1,0 +1,25 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import os
+import utils
+
+BATTERY_PATH = "/sys/class/power_supply/BAT0"
+
+icons = {
+    "Full": "󰂅",
+    "Discharging": "",
+    "Charging": "",
+    "Not charging": "",  # wire plugged
+    "Unknown": "󰂑",
+    "warn": "🔥",
+}
+
+battery_status = utils.read_file(os.path.join(BATTERY_PATH, "status")).strip()
+battery_capacity = int(utils.read_file(os.path.join(BATTERY_PATH, "capacity")).strip())
+
+res = "[{} {}]".format(icons.get(battery_status, ""), battery_capacity)
+if battery_capacity < 25:
+    res = "[{} {} {}]".format(icons.get(battery_status, ""), icons.get("warn", ""), battery_capacity)
+
+print(res)
