@@ -3,9 +3,11 @@
 #include<string.h>
 #include<unistd.h>
 #include<signal.h>
+
 #ifndef NO_X
 #include<X11/Xlib.h>
 #endif
+
 #ifdef __OpenBSD__
 #define SIGPLUS			SIGUSR1+1
 #define SIGMINUS		SIGUSR1-1
@@ -13,6 +15,7 @@
 #define SIGPLUS			SIGRTMIN
 #define SIGMINUS		SIGRTMIN
 #endif
+
 #define LENGTH(X)               (sizeof(X) / sizeof (X[0]))
 #define CMDLENGTH		50
 #define MIN( a, b ) ( ( a < b) ? a : b )
@@ -24,10 +27,12 @@ typedef struct {
 	unsigned int interval;
 	unsigned int signal;
 } Block;
+
 #ifndef __OpenBSD__
 void dummysighandler(int num);
 #endif
 void sighandler(int num);
+void buttonhandler(int sig, siginfo_t *si, void *ucontext);
 void getcmds(int time);
 void getsigcmds(unsigned int signal);
 void setupsignals();
@@ -38,6 +43,7 @@ void termhandler();
 void pstdout();
 #ifndef NO_X
 void setroot();
+
 static void (*writestatus) () = setroot;
 static int setupX();
 static Display *dpy;
@@ -52,14 +58,31 @@ static void (*writestatus) () = pstdout;
 
 static char statusbar[LENGTH(blocks)][CMDLENGTH] = {0};
 static char statusstr[2][STATUSLENGTH];
+static char button[] = "\0";
 static int statusContinue = 1;
-/* static int returnStatus = 0; */
 
 //opens process *cmd and stores output in *output
 void getcmd(const Block *block, char *output)
 {
+ 	if (block->signal)
+ 	{
+ 		output[0] = block->signal;
+ 		output++;
+ 	}
 	strcpy(output, block->icon);
-	FILE *cmdf = popen(block->command, "r");
+  FILE *cmdf;
+  if (*button)
+  {
+    setenv("BUTTON", button, 1);
+    cmdf = popen(block->command,"r");
+    *button = '\0';
+    unsetenv("BUTTON");
+  }
+  else
+  {
+    cmdf = popen(block->command,"r");
+  }
+
 	if (!cmdf)
 		return;
 	int i = strlen(block->icon);
@@ -73,7 +96,7 @@ void getcmd(const Block *block, char *output)
 	//only chop off newline if one is present at the end
 	i = output[i-1] == '\n' ? i-1 : i;
 	if (delim[0] != '\0') {
-		strncpy(output+i, delim, delimLen); 
+		strncpy(output+i, delim, delimLen);
 	}
 	else
 		output[i++] = '\0';
@@ -108,9 +131,15 @@ void setupsignals()
         signal(i, dummysighandler);
 #endif
 
+	struct sigaction sa;
 	for (unsigned int i = 0; i < LENGTH(blocks); i++) {
-		if (blocks[i].signal > 0)
+ 		if (blocks[i].signal > 0) {
 			signal(SIGMINUS+blocks[i].signal, sighandler);
+ 			sigaddset(&sa.sa_mask, SIGRTMIN+blocks[i].signal); // ignore signal when handling SIGUSR1
+ 		}
+ 	sa.sa_sigaction = buttonhandler;
+ 	sa.sa_flags = SA_SIGINFO;
+ 	sigaction(SIGUSR1, &sa, NULL);
 	}
 
 }
@@ -175,6 +204,13 @@ void statusloop()
 void dummysighandler(int signum)
 {
     return;
+}
+
+void buttonhandler(int sig, siginfo_t *si, void *ucontext)
+{
+	*button = '0' & si->si_value.sival_int & 0xff;
+	getsigcmds(si->si_value.sival_int >> 8);
+	writestatus();
 }
 #endif
 
