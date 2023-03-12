@@ -8,7 +8,7 @@ coretemp = [] if coretemp is None else coretemp
 coretemp = [x.current for x in coretemp]
 temp_avg = sum(coretemp) / len(coretemp)
 
-cpu_percent = psutil.cpu_percent(interval=0.1)
+cpu_percent = psutil.cpu_percent(interval=0.2)
 
 res = "{:.0f}C {:2.0f}%".format(temp_avg, cpu_percent)
 
