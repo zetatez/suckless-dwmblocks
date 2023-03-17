@@ -5,7 +5,7 @@ import re
 import utils
 
 lr = []
-cmd = "amixer get Master"
+cmd = "amixer get Capture"
 
 amixer = utils.popen(cmd).strip()
 amixer = [x.strip() for x in amixer.split("\n")]
@@ -17,15 +17,15 @@ for line in amixer:
 avg = sum(lr) / len(lr)
 
 if avg == 100:
-    icon = "📢"
+    icon = "🔬"
 elif avg > 60:
-    icon = "🔊"
+    icon = ""
 elif avg > 30:
-    icon = "🔉"
+    icon = "󰍬"
 elif avg > 0:
-    icon = "🔈"
+    icon = "󰍮"
 else:
-    icon = "🔇"
+    icon = ""
 
 res = "{}{:2.0f}".format(icon, avg)
 
