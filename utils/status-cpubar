@@ -32,4 +32,4 @@ delta = [int(x) for x in np.floor(8 * (delta / (max - min) if (max - min) else d
 
 res = "".join([icons.get(i, "▁") for i in delta])
 
-print(res)
+print(res, end="")

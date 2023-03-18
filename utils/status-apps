@@ -26,4 +26,4 @@ iconslist = [x for x in iconslist if x]
 
 res = " ".join(iconslist)
 
-print(res)
+print(res, end="")

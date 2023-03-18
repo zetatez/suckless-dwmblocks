@@ -25,4 +25,4 @@ res = "{} {}".format(icons.get(battery_status, ""), battery_capacity)
 if battery_capacity < 25:
     res = "{} {} {}".format(icons.get(battery_status, ""), icons.get("warn", ""), battery_capacity)
 
-print(res)
+print(res, end="")

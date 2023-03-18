@@ -12,4 +12,4 @@ cpu_percent = psutil.cpu_percent(interval=0.2)
 # res = "{:.0f}C {:2.0f}%".format(temp_avg, cpu_percent)
 res = "{:2.0f}%".format(cpu_percent)
 
-print(res)
+print(res, end="")

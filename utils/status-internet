@@ -30,4 +30,4 @@ else:
     else:
         res = "{} {} {}".format(icons.get(trojan_status, ""), icons.get(network_flags, ""), icons.get(network_operstate, ""))
 
-print(res)
+print(res, end="")

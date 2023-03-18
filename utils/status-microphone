@@ -25,4 +25,4 @@ else:
 
 res = "{}{:2.0f}".format(icon, avg)
 
-print(res)
+print(res, end="")
