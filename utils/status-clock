@@ -2,4 +2,4 @@
 
 # printf "%s %s" "$(date "+%s"|cut -b 6-)" "$(date "+%a %b/%d %H:%M")"
 # printf "%s %s" "$(date "+%s")" "$(date "+%a %b/%d %H:%M")"
-printf "%s" "$(date "+%a %b/%d %H:%M")"
+printf "%s" "$(date "+%a %b/%d %H:%M:%S")"
