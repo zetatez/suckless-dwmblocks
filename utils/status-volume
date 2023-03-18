@@ -5,28 +5,24 @@ import re
 import utils
 
 lr = []
+flag = "on"
 cmd = "amixer get Master"
-
 amixer = utils.popen(cmd).strip()
 amixer = [x.strip() for x in amixer.split("\n")]
 for line in amixer:
     m = re.match(r".*\[([0-9]{1,3})%\].*", line)
     if m:
         lr.append(int(m.group(1)))
+        if "off" in line:
+            flag = "off"
 
 avg = sum(lr) / len(lr)
 
-if avg == 100:
-    icon = "📢"
-elif avg > 60:
-    icon = "🔊"
-elif avg > 30:
+if flag == "on" and avg > 0:
     icon = "🔉"
-elif avg > 0:
-    icon = "🔈"
 else:
     icon = "🔇"
 
-res = "{}{:2.0f}".format(icon, avg)
+res = "{}{:2.0f}".format(icon, avg, flag)
 
 print(res)

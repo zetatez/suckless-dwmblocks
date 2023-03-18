@@ -21,8 +21,8 @@ if not os.path.exists(BATTERY_PATH):
 battery_status = utils.read_file(os.path.join(BATTERY_PATH, "status")).strip()
 battery_capacity = int(utils.read_file(os.path.join(BATTERY_PATH, "capacity")).strip())
 
-res = "{}{}".format(icons.get(battery_status, ""), battery_capacity)
+res = "{} {}".format(icons.get(battery_status, ""), battery_capacity)
 if battery_capacity < 25:
-    res = "{} {}{}".format(icons.get(battery_status, ""), icons.get("warn", ""), battery_capacity)
+    res = "{} {} {}".format(icons.get(battery_status, ""), icons.get("warn", ""), battery_capacity)
 
 print(res)
