@@ -4,6 +4,7 @@
 import utils
 
 icons = {
+    "vim": "",
     "msedge": "󰌀",
     "chrome": "",
     "ncmpcpp": "󰝚",
@@ -12,6 +13,7 @@ icons = {
 }
 
 apps = [
+    "vim",
     "msedge",
     "chrome",
     "ncmpcpp",
