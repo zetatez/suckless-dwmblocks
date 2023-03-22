@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import re
 import os
 import utils
 
@@ -22,6 +21,7 @@ trojan_status = "trojan on" if utils.in_running(pattern="trojan") else "trojan o
 network_flags = utils.read_file(os.path.join(NETWORK_PATH, "flags")).strip()
 network_operstate = utils.read_file(os.path.join(NETWORK_PATH, "operstate")).strip()
 
+res = ""
 if network_operstate == "up":
     res = "{} {}".format(icons.get(trojan_status, ""), icons.get(network_operstate, ""))
 else:
