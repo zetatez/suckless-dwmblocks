@@ -19,10 +19,10 @@ for line in amixer:
 avg = sum(lr) / len(lr)
 
 if flag == "on" and avg > 0:
-    icon = "🔉"
+    icon = ""
 else:
     icon = "🔇"
 
-res = "{}{:2.0f}".format(icon, avg, flag)
+res = " {}{:2.0f}".format(icon, avg, flag)
 
 print(res, end="")

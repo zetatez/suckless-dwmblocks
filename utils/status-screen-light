@@ -4,6 +4,6 @@
 import utils
 
 light = float(utils.popen(cmd="light").strip())
-res = "{} {:.0f}".format("󱩒", light)
+res = " {} {:.0f}".format("󱩒", light)
 
 print(res, end="")

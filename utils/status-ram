@@ -5,6 +5,6 @@ import psutil
 
 memory_percent = psutil.virtual_memory().percent
 
-res = "{:02.0f}%".format(memory_percent)
+res = " m{:2.0f}".format(memory_percent)
 
 print(res, end="")

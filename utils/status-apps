@@ -24,6 +24,6 @@ apps = [
 iconslist = [icons.get(app, "") for app in apps if utils.in_running(pattern=app)]
 iconslist = [x for x in iconslist if x]
 
-res = " ".join(iconslist)
+res = "  ".join(iconslist)
 
 print(res, end="")
