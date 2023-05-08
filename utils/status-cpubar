@@ -30,6 +30,6 @@ delta = np.array([(sum(stat2[i][1:3]) - sum(stat1[i][1:3])) for i in range(len(s
 min, max = delta.min(), delta.max()
 delta = [int(x) for x in np.floor(8 * (delta / (max - min) if (max - min) else delta))]
 
-res = "".join([icons.get(i, "▁") for i in delta])
+res = " ".join([icons.get(i, "▁") for i in delta])
 
 print(res, end="")

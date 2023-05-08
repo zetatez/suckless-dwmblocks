@@ -12,7 +12,7 @@ static const Block blocks[] = {
 {"", UTILS"/status-volume",           1,    0 },
 {"", UTILS"/status-microphone",       1,    0 },
 {"", UTILS"/status-screen-light",     1,    0 },
-/* {"", UTILS"/status-cpubar",           3,    0 }, */
+{"", UTILS"/status-cpubar",           3,    0 },
 {"", UTILS"/status-cpu",              3,    0 },
 {"", UTILS"/status-ram",              3,    0 },
 {"", UTILS"/status-clock",            1,    0 },
