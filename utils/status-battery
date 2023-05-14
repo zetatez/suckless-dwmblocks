@@ -10,7 +10,7 @@ icons = {
     "Full": "󱊣",
     "Discharging": "",
     "Charging": "󱐥",
-    "Not charging": "",  # wire plugged
+    "Not charging": "󱐤",  # wire plugged
     "Unknown": "󰂑",
     "warn": "🔥",
 }
