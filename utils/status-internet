@@ -10,24 +10,19 @@ icons = {
     "up": "󰖩",
     "down": "󰖪",
     "0x1003": "📡",
-    "trojan on": "",
-    "trojan off": "",
 }
 
 if not os.path.exists(NETWORK_PATH):
     exit(0)
 
-trojan_status = "trojan on" if utils.in_running(pattern="trojan") else "trojan off"
 network_flags = utils.read_file(os.path.join(NETWORK_PATH, "flags")).strip()
 network_operstate = utils.read_file(os.path.join(NETWORK_PATH, "operstate")).strip()
 
 res = ""
-if network_operstate == "up":
-    res = " {}  {}".format(icons.get(trojan_status, ""), icons.get(network_operstate, ""))
+if network_operstate in ["up", "down"]:
+    res = " {}".format(icons.get(network_operstate, ""))
 else:
     if network_flags == "0x1003":
-        res = " {}  {} {}".format(icons.get(trojan_status, ""), icons.get(network_flags, ""), icons.get(network_operstate, ""))
-    else:
-        res = " {}  {} {}".format(icons.get(trojan_status, ""), icons.get(network_flags, ""), icons.get(network_operstate, ""))
+        res = " {} {}".format(icons.get(network_flags, ""), icons.get(network_operstate, ""))
 
 print(res, end="")

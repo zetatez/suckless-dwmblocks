@@ -10,6 +10,7 @@ icons = {
     "ncmpcpp": "󰝚",
     "netease-cloud-music": "󰝚",
     "ffmpeg": "",
+    "clash": "🐈 ",
 }
 
 apps = [
@@ -19,6 +20,7 @@ apps = [
     "ncmpcpp",
     "netease-cloud-music",
     "ffmpeg",
+    "clash",
 ]
 
 iconslist = [icons.get(app, "") for app in apps if utils.in_running(pattern=app)]
