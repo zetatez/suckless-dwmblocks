@@ -2,10 +2,10 @@
 
 unread="$(find "$HOME/.mail/inbox/cur" -type f|wc -l 2>/dev/null)"
 
-# icon="📨"
 if [[ ${unread} != 0 ]]; then
   icon="📩"
-  printf " %s" "${icon}"
+else
+  icon="📨"
 fi
 
-# printf " %s" "${icon}"
+printf "%s" "${icon}"

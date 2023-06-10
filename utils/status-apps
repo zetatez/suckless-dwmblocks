@@ -13,18 +13,9 @@ icons = {
     "clash": "🐈 ",
 }
 
-apps = [
-    "vim",
-    "msedge",
-    "chrome",
-    "ncmpcpp",
-    "netease-cloud-music",
-    "ffmpeg",
-    "clash",
-]
+apps = icons.keys()
 
-iconslist = [icons.get(app, "") for app in apps if utils.in_running(pattern=app)]
-iconslist = [x for x in iconslist if x]
+iconslist = [x for x in [icons.get(app, "") for app in apps if utils.in_running(app)] if x]
 
 res = "  ".join(iconslist)
 

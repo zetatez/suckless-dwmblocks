@@ -20,9 +20,9 @@ network_operstate = utils.read_file(os.path.join(NETWORK_PATH, "operstate")).str
 
 res = ""
 if network_operstate in ["up", "down"]:
-    res = " {}".format(icons.get(network_operstate, ""))
+    res = "{}".format(icons.get(network_operstate, ""))
 else:
     if network_flags == "0x1003":
-        res = " {} {}".format(icons.get(network_flags, ""), icons.get(network_operstate, ""))
+        res = "{} {}".format(icons.get(network_flags, ""), icons.get(network_operstate, ""))
 
 print(res, end="")

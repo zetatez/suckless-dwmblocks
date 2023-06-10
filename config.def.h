@@ -7,10 +7,10 @@ static const Block blocks[] = {
 {"", UTILS"/status-msg",              3,    0 },
 {"", UTILS"/status-apps",             1,    0 },
 {"", UTILS"/status-mail",             300,  0 },
-{"", UTILS"/status-internet",         1,    0 },
+{"", UTILS"/status-net",         1,    0 },
 {"", UTILS"/status-battery",          1,    0 },
 {"", UTILS"/status-volume",           1,    0 },
-{"", UTILS"/status-microphone",       1,    0 },
+{"", UTILS"/status-micro",       1,    0 },
 {"", UTILS"/status-screen-light",     1,    0 },
 /* {"", UTILS"/status-cpubar",           3,    0 }, */
 {"", UTILS"/status-cpu",              3,    0 },
@@ -19,5 +19,5 @@ static const Block blocks[] = {
 };
 
 //sets delimeter between status commands. NULL character ('\0') means no delimeter.
-static char delim[] = " ";
+static char delim[] = "  ";
 static unsigned int delimLen = 3;
