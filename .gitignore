@@ -1,3 +1,4 @@
+utils/__pycache__/*
 .ccls-cache
 # Custom blocks file
 blocks.h
