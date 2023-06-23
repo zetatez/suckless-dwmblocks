@@ -5,8 +5,8 @@ import psutil
 
 coretemp = psutil.sensors_temperatures().get("coretemp")
 coretemp = [] if coretemp is None else coretemp
-coretemp = [x.current for x in coretemp]
+coretemp = [x.current for x in coretemp if "Core" in x.label]
 temp_max = max(coretemp)
 cpu_percent = psutil.cpu_percent(interval=0.2)
 
-print("[CPU {:.0f}C {:2.0f}%]".format(temp_max, cpu_percent), end="")
+print("🏖️ {:.0f}c {:02.0f}%".format(temp_max, cpu_percent), end="")

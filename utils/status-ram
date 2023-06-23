@@ -5,4 +5,4 @@ import psutil
 
 memory_percent = psutil.virtual_memory().percent
 
-print("[RAM {:2.0f}%]".format(memory_percent), end="")
+print("{:02.0f}%".format(memory_percent), end="")

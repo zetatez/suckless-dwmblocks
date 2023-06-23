@@ -4,7 +4,7 @@
 import utils
 
 icons = {
-    # "vim": "",
+    "vim": "",
     # "msedge": "󰌀",
     # "chrome": "",
     "ncmpcpp": "󰝚",
@@ -19,4 +19,4 @@ iconslist = [x for x in [icons.get(app, "") for app in apps if utils.in_running(
 
 res = "  ".join(iconslist)
 
-print(res, end=" |")
+print(res, end="|")

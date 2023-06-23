@@ -23,8 +23,8 @@ battery_capacity = int(utils.read_file(os.path.join(BATTERY_PATH, "capacity")).s
 
 res = ""
 if battery_capacity < 25 and battery_status != "Charging":
-    res = "{} {} {}%".format(icons.get(battery_status, ""), icons.get("warn", ""), battery_capacity)
+    res = "{} {} {:02.0f}%".format(icons.get(battery_status, ""), icons.get("warn", ""), battery_capacity)
 else:
-    res = "{} {}%".format(icons.get(battery_status, ""), battery_capacity)
+    res = "{} {:02.0f}%".format(icons.get(battery_status, ""), battery_capacity)
 
 print(res, end="")

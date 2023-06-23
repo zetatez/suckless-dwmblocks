@@ -3,4 +3,4 @@
 
 import datetime
 
-print(datetime.datetime.now().strftime("%a %b/%d %H:%M:%S"), end="")
+print(datetime.datetime.now().strftime("/  %a %b/%d %H:%M:%S"), end="")
