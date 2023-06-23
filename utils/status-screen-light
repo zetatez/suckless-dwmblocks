@@ -3,7 +3,6 @@
 
 import utils
 
-light = float(utils.popen(cmd="light").strip())
-res = "{} {:.0f}%".format("󱩒", light)
+light = float(utils.popen("light").strip())
 
-print(res, end="")
+print("{} {:.0f}%".format("󱩒", light), end="")

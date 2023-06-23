@@ -9,8 +9,8 @@ BATTERY_PATH = "/sys/class/power_supply/BAT0"
 icons = {
     "Full": "󱊣",
     "Discharging": "",
-    "Charging": "󱐥",
-    "Not charging": "󱐤",  # wire plugged
+    "Charging": "",
+    "Not charging": "",  # wire plugged
     "Unknown": "󰂑",
     "warn": "🔥",
 }

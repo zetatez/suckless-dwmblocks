@@ -23,6 +23,4 @@ if flag == "on" and avg > 0:
 else:
     icon = "🔇"
 
-res = "{}{:2.0f}%".format(icon, avg, flag)
-
-print(res, end="")
+print("{}{:2.0f}%".format(icon, avg), end="")

@@ -6,23 +6,13 @@ import utils
 
 NETWORK_PATH = "/sys/class/net/wlan0"
 
-icons = {
-    "up": "󰖩",
-    "down": "󰖪",
-    "0x1003": "📡",
-}
+icons = {"up": "󰖩", "down": "󰖪"}
 
 if not os.path.exists(NETWORK_PATH):
     exit(0)
 
-network_flags = utils.read_file(os.path.join(NETWORK_PATH, "flags")).strip()
 network_operstate = utils.read_file(os.path.join(NETWORK_PATH, "operstate")).strip()
 
-res = ""
-if network_operstate in ["up", "down"]:
-    res = "{}".format(icons.get(network_operstate, ""))
-else:
-    if network_flags == "0x1003":
-        res = "{} {}".format(icons.get(network_flags, ""), icons.get(network_operstate, ""))
+icon = "{}".format(icons.get(network_operstate, ""))
 
-print(res, end="")
+print("{:s}".format(icon), end="")

@@ -1,5 +1,6 @@
-#!/bin/sh
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
-# printf "%s %s" "$(date "+%s"|cut -b 6-)" "$(date "+%a %b/%d %H:%M")"
-# printf "%s %s" "$(date "+%s")" "$(date "+%a %b/%d %H:%M")"
-printf "  %s" "$(date "+%a  %b/%d %H:%M:%S")"
+import datetime
+
+print(datetime.datetime.now().strftime("%a %b/%d %H:%M:%S"), end="")

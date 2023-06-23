@@ -1,11 +1,14 @@
-#!/bin/sh
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
-unread="$(find "$HOME/.mail/inbox/cur" -type f|wc -l 2>/dev/null)"
+import os
 
-if [[ ${unread} != 0 ]]; then
-  icon="📩"
-  printf "%s" "${icon}"
-# else
-#   icon="📨"
-#   printf "%s" "${icon}"
-fi
+icons = {
+    "yes": "📩",
+    "no": "📨",
+}
+
+file_name = os.path.join(os.environ.get("HOME", "en_US.UTF-8"), ".mail/inbox")
+icon = icons.get("yes") if os.path.getsize(file_name) else icons.get("no")
+
+print("{:s}".format(icon), end="")
