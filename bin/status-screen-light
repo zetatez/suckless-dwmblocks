@@ -1,8 +1,0 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
-import utils
-
-light = float(utils.popen("light").strip())
-
-print("{} {:02.0f}%".format("󱩒", light), end="")

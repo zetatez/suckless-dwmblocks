@@ -1,8 +1,0 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
-import psutil
-
-memory_percent = psutil.virtual_memory().percent
-
-print("{:02.0f}%".format(memory_percent), end="")
