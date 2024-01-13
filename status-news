@@ -1,22 +1,8 @@
 #!/bin/sh
 
 # crontab -e
-# *    * * * *     sh /home/dionysus/.suckless/arch-dwmstatus/status_news.sh >> /dev/null
+# *    * * * *     sh /home/dionysus/.suckless/suckless-dwmblocks/status-news >> /dev/null
 
-# dwmstatus read from ~/.notification.status
-FILEPATH=~/.notification.status
-:> $FILEPATH
-
-# :> /tmp/.notification.status.new
-# :> /tmp/.notification.status.new
-# :> /tmp/.notification.status
-
-mv /tmp/notification.status.new /tmp/notification.status.old
-
-# Any msgs can be appended on
-# task -l|grep -vi "^--\|^$\|tasks\$\|task\$" > ~/.notification.status
-
-# Futu live news 7X24
 curl 'https://news.futunn.com/main/live-list?page=0&page_size=10' \
   -H 'Accept: application/json, text/javascript, */*; q=0.01' \
   -H 'Accept-Language: zh-CN,zh;q=0.9,en-GB;q=0.8,en-US;q=0.7,en;q=0.6' \
@@ -32,19 +18,4 @@ curl 'https://news.futunn.com/main/live-list?page=0&page_size=10' \
   -H 'sec-ch-ua-mobile: ?0' \
   -H 'sec-ch-ua-platform: "Linux"' \
   -s \
-  --compressed|jq ".data.list"|jq '.[]'|jq '.title, .content' \
-  > /tmp/notification.status.new
-
-cat /tmp/notification.status.new /tmp/notification.status.old|sort|uniq -u > /tmp/notification.status
-ct=$(cat /tmp/notification.status|wc -l)
-if [ "$ct" == "0" ]; then
-  :> $FILEPATH
-  task -l|grep -vi "^--\|^$\|tasks\$\|task\$" > /tmp/notification.status
-fi
-
-while read line;
-do
-  echo "$line" > $FILEPATH
-  sleep 3
-done < /tmp/notification.status
-:> $FILEPATH
+  --compressed|jq ".data.list"|jq '.[]'|jq '.title' | head -n 1 > /tmp/.msg

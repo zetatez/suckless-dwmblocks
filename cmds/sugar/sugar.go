@@ -138,7 +138,7 @@ func GetEmail(emailPath string) (emails []Email, err error) {
 }
 
 func GetMsg(msgPath string) (msg string, err error) {
-	msgByte, err := os.ReadFile(path.Join(os.Getenv("HOME"), msgPath))
+	msgByte, err := os.ReadFile(msgPath)
 	if err != nil {
 		return "", err
 	}

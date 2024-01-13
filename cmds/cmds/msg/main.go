@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	MsgPath = ".msg"
+	MsgPath = "/tmp/.msg"
 )
 
 func main() {
