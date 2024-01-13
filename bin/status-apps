@@ -5,8 +5,8 @@ import utils
 
 icons = {
     "vim": "",
-    # "msedge": "󰌀",
-    # "chrome": "",
+    "msedge": "󰌀",
+    "chrome": "",
     "ncmpcpp": "󰝚",
     "netease-cloud-music": "󰝚",
     "ffmpeg": "",

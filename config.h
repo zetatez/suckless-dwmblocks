@@ -1,10 +1,12 @@
 
-#define PREFIX "/home/dionysus/.suckless/suckless-dwmblocks/utils"
+#define PREFIX "/home/dionysus/.suckless/suckless-dwmblocks/bin"
 
 //Modify this file to change what commands output to your statusbar, and recompile using the make command.
 static const Block blocks[] = {
-  /*Icon*//*Command*//*Update Interval*//*Update Signal*/
-  // {"", PREFIX"/status-msg"          ,3   ,0 },
+  /*
+   * Icon, Command, Update Interval, Update Signal
+  */
+  {"", PREFIX"/status-msg"          ,5   ,0 },
   {"", PREFIX"/status-apps"         ,1   ,0 },
   {"", PREFIX"/status-mail"         ,300 ,0 },
   {"", PREFIX"/status-net"          ,1   ,0 },

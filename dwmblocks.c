@@ -61,7 +61,7 @@ static char statusstr[2][STATUSLENGTH];
 static char button[] = "\0";
 static int statusContinue = 1;
 
-//opens process *cmd and stores output in *output
+// opens process *cmd and stores output in *output
 void getcmd(const Block *block, char *output)
 {
   if (block->signal)
@@ -88,12 +88,11 @@ void getcmd(const Block *block, char *output)
   int i = strlen(block->icon);
   fgets(output+i, CMDLENGTH-i-delimLen, cmdf);
   i = strlen(output);
-  if (i == 0) {
-    //return if block and command output are both empty
+  if (i == 0) { // return if block and command output are both empty
     pclose(cmdf);
     return;
   }
-  //only chop off newline if one is present at the end
+  // only chop off newline if one is present at the end
   i = output[i-1] == '\n' ? i-1 : i;
   if (delim[0] != '\0') {
     strncpy(output+i, delim, delimLen);
@@ -133,13 +132,13 @@ void setupsignals()
 
   struct sigaction sa;
   for (unsigned int i = 0; i < LENGTH(blocks); i++) {
-     if (blocks[i].signal > 0) {
+    if (blocks[i].signal > 0) {
       signal(SIGMINUS+blocks[i].signal, sighandler);
-       sigaddset(&sa.sa_mask, SIGRTMIN+blocks[i].signal); // ignore signal when handling SIGUSR1
-     }
-   sa.sa_sigaction = buttonhandler;
-   sa.sa_flags = SA_SIGINFO;
-   sigaction(SIGUSR1, &sa, NULL);
+      sigaddset(&sa.sa_mask, SIGRTMIN+blocks[i].signal); // ignore signal when handling SIGUSR1
+    }
+    sa.sa_sigaction = buttonhandler;
+    sa.sa_flags = SA_SIGINFO;
+    sigaction(SIGUSR1, &sa, NULL);
   }
 
 }
@@ -151,13 +150,13 @@ int getstatus(char *str, char *last)
   for (unsigned int i = 0; i < LENGTH(blocks); i++)
     strcat(str, statusbar[i]);
   str[strlen(str)-strlen(delim)] = '\0';
-  return strcmp(str, last);//0 if they are the same
+  return strcmp(str, last); // 0 if they are the same
 }
 
 #ifndef NO_X
 void setroot()
 {
-  if (!getstatus(statusstr[0], statusstr[1]))//Only set root if text has changed.
+  if (!getstatus(statusstr[0], statusstr[1])) // Only set root if text has changed.
     return;
   XStoreName(dpy, root, statusstr[0]);
   XFlush(dpy);
@@ -178,7 +177,7 @@ int setupX()
 
 void pstdout()
 {
-  if (!getstatus(statusstr[0], statusstr[1]))//Only write out if text has changed.
+  if (!getstatus(statusstr[0], statusstr[1])) // Only write out if text has changed.
     return;
   printf("%s\n",statusstr[0]);
   fflush(stdout);
@@ -227,7 +226,7 @@ void termhandler()
 
 int main(int argc, char** argv)
 {
-  for (int i = 0; i < argc; i++) {//Handle command line arguments
+  for (int i = 0; i < argc; i++) { // Handle command line arguments
     if (!strcmp("-d",argv[i]))
       strncpy(delim, argv[++i], delimLen);
     else if (!strcmp("-p",argv[i]))
