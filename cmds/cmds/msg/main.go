@@ -20,6 +20,8 @@ func FormatMsg() (str string) {
 	if err != nil {
 		return ""
 	}
-	msg := strings.TrimSpace(string(msgByte))
-	return msg
+	if len(msgByte) != 0 {
+		str = fmt.Sprintf("[%s]", strings.TrimSpace(string(msgByte)))
+	}
+	return str
 }

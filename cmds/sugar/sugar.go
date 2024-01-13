@@ -146,6 +146,11 @@ func GetMsg(msgPath string) (msg string, err error) {
 	return msg, err
 }
 
+func CleanMsg(msgPath string) {
+	os.WriteFile(msgPath, []byte(""), 0o644)
+	return
+}
+
 func GetProcs() (procs []*process.Process, err error) {
 	return process.Processes()
 }

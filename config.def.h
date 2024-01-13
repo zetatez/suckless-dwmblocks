@@ -6,9 +6,10 @@ static const Block blocks[] = {
   /*
    * Icon, Command, Update Interval, Update Signal
   */
-  {"", PREFIX"/msg"          ,5     ,0 },
-  {"", PREFIX"/apps"         ,8     ,0 },
-  {"", PREFIX"/mail"         ,900   ,0 },
+  {"", PREFIX"/clean-msg"    ,8     ,0 },
+  {"", PREFIX"/msg"          ,1     ,0 },
+  {"", PREFIX"/procs"        ,8     ,0 },
+  {"", PREFIX"/email"        ,900   ,0 },
   {"", PREFIX"/net"          ,1     ,0 },
   {"", PREFIX"/battery"      ,180   ,0 },
   {"", PREFIX"/volume"       ,1     ,0 },
@@ -21,5 +22,5 @@ static const Block blocks[] = {
 };
 
 //sets delimeter between status commands. NULL character ('\0') means no delimeter.
-static char delim[] = " ";
+static char delim[] = "  ";
 static unsigned int delimLen = 3;

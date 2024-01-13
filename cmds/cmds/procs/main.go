@@ -56,5 +56,6 @@ func FormatProcs() (str string) {
 	for proc := range runningConcernedProcs {
 		str = fmt.Sprintf("%s %s", str, concernedProcsIcon[proc])
 	}
+	str += "|"
 	return str
 }

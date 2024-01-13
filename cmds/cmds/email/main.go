@@ -2,12 +2,14 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"cmds/sugar"
 )
 
 const (
 	EmailPath = ".mail/inbox"
+	MsgPath   = "/tmp/.msg"
 )
 
 func main() {
@@ -26,6 +28,11 @@ func FormatEmail() (str string) {
 	switch {
 	case len(emails) > 0:
 		str = fmt.Sprintf("%s: %d", inboxIcons["new-email"], len(emails))
+		msg := ""
+		for _, email := range emails {
+			msg += fmt.Sprintf("Sub: %s; Fro: %s.\n", email.Subject, email.From)
+		}
+		os.WriteFile(MsgPath, []byte(msg), 0o644)
 	default:
 		str = inboxIcons["empty"]
 	}

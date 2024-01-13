@@ -14,6 +14,7 @@ build:
 	go build -o ./bins/screen-light ./cmds/screen-light/main.go
 	go build -o ./bins/volume       ./cmds/volume/main.go
 	go build -o ./bins/weather      ./cmds/weather/main.go
+	go build -o ./bins/clean-msg    ./cmds/clean-msg/main.go
 
 clean:
 	rm -rf bins/*
