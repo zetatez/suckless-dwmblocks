@@ -17,7 +17,7 @@ func FormatVolume() (str string) {
 	}
 	statusIcons := map[string]string{
 		"on":  "󰕾",
-		"off": "󰕿",
+		"off": "󰝟",
 	}
 	str = fmt.Sprintf("%s: %02.0f%%", statusIcons[status], percent)
 	return str
