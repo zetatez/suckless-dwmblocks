@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 
 	"cmds/sugar"
@@ -55,9 +56,11 @@ func FormatProcs() (str string) {
 			}
 		}
 	}
+	procIconList := []string{}
 	for proc := range runningConcernedProcs {
-		str = fmt.Sprintf("%s %s", str, concernedProcsIcon[proc])
+		procIconList = append(procIconList, concernedProcsIcon[proc])
 	}
-	str += "|"
+	sort.Strings(procIconList)
+	str = strings.Join(procIconList, " ") + "|"
 	return str
 }
