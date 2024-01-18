@@ -2,6 +2,7 @@ default: clean build
 
 build:
 	mkdir -p ./bins
+	go mod tidy
 	go build -o ./bins/battery      ./cmds/battery/main.go &
 	go build -o ./bins/clock        ./cmds/clock/main.go &
 	go build -o ./bins/cpu          ./cmds/cpu/main.go &
