@@ -18,30 +18,29 @@ import (
 	"github.com/shirou/gopsutil/process"
 )
 
-func GetWeather() (weather string, err error) {
+func GetWeather() (temp, wind string, err error) {
 	resp, err := http.Get("https://v2.wttr.in")
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("status code error: %d %s", resp.StatusCode, resp.Status)
+		return "", "", fmt.Errorf("status code error: %d %s", resp.StatusCode, resp.Status)
 	}
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 	slice1 := strings.Split(doc.Find("pre").Text(), "\n")
 	if len(slice1) == 0 {
-		return "", fmt.Errorf("no weather found")
+		return "", "", fmt.Errorf("no weather found")
 	}
 	slice2 := strings.Split(slice1[0], ",")
 	if len(slice2) != 5 {
-		return "", fmt.Errorf("no weather found")
+		return "", "", fmt.Errorf("no weather found")
 	}
-	temp, wind := strings.TrimSpace(slice2[1]), strings.TrimSpace(slice2[3])
-	weather = fmt.Sprintf("Temp: %s, Wind: %s", temp, wind)
-	return weather, nil
+	temp, wind = strings.TrimSpace(slice2[1]), strings.TrimSpace(slice2[3])
+	return temp, wind, nil
 }
 
 func GetClock() (clock string) {

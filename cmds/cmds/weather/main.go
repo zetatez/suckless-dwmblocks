@@ -11,10 +11,10 @@ func main() {
 }
 
 func FormatWeather() (str string) {
-	weather, err := sugar.GetWeather()
+	temp, wind, err := sugar.GetWeather()
 	if err != nil {
 		return ""
 	}
-	str = weather
+	str = fmt.Sprintf("[weather]: %s %s", temp, wind)
 	return str
 }
