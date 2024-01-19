@@ -8,7 +8,7 @@ static const Block blocks[] = {
   */
   {"", PREFIX"/clean-msg"    ,10    ,0 },
   {"", PREFIX"/msg"          ,1     ,0 },
-  {"", PREFIX"/procs"        ,8     ,0 },
+  {"", PREFIX"/procs"        ,3     ,0 },
   {"", PREFIX"/email"        ,180   ,0 },
   {"", PREFIX"/net"          ,1     ,0 },
   {"", PREFIX"/battery"      ,180   ,0 },
