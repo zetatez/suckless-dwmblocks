@@ -7,11 +7,11 @@ import (
 )
 
 func main() {
-	fmt.Println(FormatCpu())
+	fmt.Println(FormatMem())
 }
 
-func FormatCpu() (str string) {
-	cpuPercent, err := sugar.GetCpuPercent()
+func FormatMem() (str string) {
+	memPercent, err := sugar.GetMemPercent()
 	if err != nil {
 		return ""
 	}
@@ -24,17 +24,17 @@ func FormatCpu() (str string) {
 	}
 	icon := ""
 	switch {
-	case cpuPercent < 10:
+	case memPercent < 10:
 		icon = icons["10"]
-	case cpuPercent < 25:
+	case memPercent < 25:
 		icon = icons["25"]
-	case cpuPercent < 50:
+	case memPercent < 50:
 		icon = icons["50"]
-	case cpuPercent < 75:
+	case memPercent < 75:
 		icon = icons["75"]
-	case cpuPercent < 100:
+	case memPercent < 100:
 		icon = icons["100"]
 	}
-	str = fmt.Sprintf("[cpu]: %s", icon)
+	str = fmt.Sprintf("[mem]: %s", icon)
 	return str
 }

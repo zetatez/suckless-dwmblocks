@@ -19,12 +19,12 @@ func FormatBattery() (str string) {
 	if err != nil {
 		return ""
 	}
-	warn := "🔥"
+	warn := ""
 	statusIcons := map[string]string{
 		"Full":         "󱊣",
 		"Discharging":  "",
 		"Charging":     "",
-		"Not charging": "",
+		"Not charging": "󰂄",
 		"Unknown":      "󰂑",
 	}
 	switch {

@@ -45,7 +45,7 @@ func GetWeather() (weather string, err error) {
 }
 
 func GetClock() (clock string) {
-	return time.Now().Format("Mon, Jan/02 15:04:05")
+	return time.Now().Format("Mon, Jan/02 15:04:05 ")
 }
 
 func GetCpuPercent() (percent float64, err error) {
@@ -61,7 +61,7 @@ func GetCpuTemp() (temp float64, err error) {
 	return temp, nil
 }
 
-func GetRamPercent() (percent float64, err error) {
+func GetMemPercent() (percent float64, err error) {
 	stat, err := mem.VirtualMemory()
 	if err != nil {
 		return 0, err

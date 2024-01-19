@@ -22,12 +22,12 @@ func FormatEmail() (str string) {
 		return ""
 	}
 	inboxIcons := map[string]string{
-		"new-email": "📩",
-		"empty":     "📨",
+		"new-email": "󰶉",
+		"empty":     "󰶉",
 	}
 	switch {
 	case len(emails) > 0:
-		str = fmt.Sprintf("%s: %d", inboxIcons["new-email"], len(emails))
+		str = fmt.Sprintf("%s: %d🍎", inboxIcons["new-email"], len(emails))
 		msg := ""
 		for _, email := range emails {
 			msg += fmt.Sprintf("Sub: %s; Fro: %s.\n", email.Subject, email.From)

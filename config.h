@@ -6,18 +6,19 @@ static const Block blocks[] = {
   /*
    * Icon, Command, Update Interval, Update Signal
   */
-  {"", PREFIX"/clean-msg"    ,8     ,0 },
+  {"", PREFIX"/clean-msg"    ,10    ,0 },
   {"", PREFIX"/msg"          ,1     ,0 },
   {"", PREFIX"/procs"        ,8     ,0 },
-  {"", PREFIX"/email"        ,900   ,0 },
+  {"", PREFIX"/email"        ,180   ,0 },
   {"", PREFIX"/net"          ,1     ,0 },
   {"", PREFIX"/battery"      ,180   ,0 },
   {"", PREFIX"/volume"       ,1     ,0 },
   {"", PREFIX"/micro"        ,1     ,0 },
   {"", PREFIX"/screen-light" ,1     ,0 },
   {"", PREFIX"/cpu"          ,3     ,0 },
-  {"", PREFIX"/ram"          ,3     ,0 },
-  // {"", PREFIX"/weather"      ,3600  ,0 },
+  {"", PREFIX"/mem"          ,3     ,0 },
+  {"", PREFIX"/disk"         ,60    ,0 },
+  {"", PREFIX"/weather"      ,3600  ,0 },
   {"", PREFIX"/clock"        ,1     ,0 },
 };
 

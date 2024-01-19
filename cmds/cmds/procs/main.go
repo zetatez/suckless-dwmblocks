@@ -15,14 +15,25 @@ func main() {
 func FormatProcs() (str string) {
 	concernedProcsIcon := map[string]string{
 		"chrome":              "",
-		"wechat-uos":          "󰘑",
-		"msedge":              "󰌀",
-		"flameshot":           "",
 		"clash":               "󰟾",
 		"ffmpeg":              "󰻃",
+		"flameshot":           "",
+		"inkscape":            "",
+		"julia":               "",
+		"jushuto":             "📂",
+		"krita":               "",
+		"msedge":              "󰌀",
+		"mutt":                "󰶉",
 		"ncmpcpp":             "󰝚",
 		"netease-cloud-music": "󰝚",
+		"obsidian":            "󱓩",
+		"python":              "",
+		"scala":               "",
+		"screenkey":           "",
+		"subl":                "",
 		"vim":                 "",
+		"wechat-uos":          "󰘑",
+		"xournalpp":           "󰽉",
 		"zathura":             "",
 	}
 	procs, err := sugar.GetProcs()
@@ -54,6 +65,6 @@ func FormatProcs() (str string) {
 		procIconList = append(procIconList, concernedProcsIcon[proc])
 	}
 	sort.Strings(procIconList)
-	str = strings.Join(procIconList, " ") + "|"
+	str = strings.Join(procIconList, "  ") + "|"
 	return str
 }
