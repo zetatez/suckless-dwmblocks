@@ -1,22 +1,12 @@
 default: clean build
 
-build:
-	mkdir -p ./bins
+prepare:
+	mkdir -p ./bins/
 	go mod tidy
-	go build -o ./bins/battery      ./cmds/battery/main.go &
-	go build -o ./bins/clock        ./cmds/clock/main.go &
-	go build -o ./bins/cpu          ./cmds/cpu/main.go &
-	go build -o ./bins/disk         ./cmds/disk/main.go &
-	go build -o ./bins/email        ./cmds/email/main.go &
-	go build -o ./bins/micro        ./cmds/micro/main.go &
-	go build -o ./bins/msg          ./cmds/msg/main.go &
-	go build -o ./bins/net          ./cmds/net/main.go &
-	go build -o ./bins/procs        ./cmds/procs/main.go &
-	go build -o ./bins/mem          ./cmds/mem/main.go &
-	go build -o ./bins/screen-light ./cmds/screen-light/main.go &
-	go build -o ./bins/volume       ./cmds/volume/main.go &
-	go build -o ./bins/weather      ./cmds/weather/main.go &
-	go build -o ./bins/clean-msg    ./cmds/clean-msg/main.go &
+
+build: prepare
+	@cat ./go-build.sh
+	./go-build.sh
 
 clean:
 	rm -rf bins/*
