@@ -29,9 +29,9 @@ func FormatBattery() (str string) {
 	}
 	switch {
 	case capacity < 25:
-		str = fmt.Sprintf("%s %02.0f%%", warn, capacity)
+		str = fmt.Sprintf("%s %02.0f", warn, capacity)
 	default:
-		str = fmt.Sprintf("%s %02.0f%%", statusIcons[status], capacity)
+		str = fmt.Sprintf("%s %02.0f", statusIcons[status], capacity)
 	}
 	return str
 }

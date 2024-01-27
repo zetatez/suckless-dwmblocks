@@ -19,6 +19,6 @@ func FormatVolume() (str string) {
 		"on":  "󰕾",
 		"off": "󰖁",
 	}
-	str = fmt.Sprintf("%s: %02.0f%%", statusIcons[status], percent)
+	str = fmt.Sprintf("%s %02.0f", statusIcons[status], percent)
 	return str
 }

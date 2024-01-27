@@ -15,6 +15,6 @@ func FormatScreenLight() (str string) {
 	if err != nil {
 		return ""
 	}
-	str = fmt.Sprintf("󱩒: %02.0f%%", screenLight)
+	str = fmt.Sprintf("󱩒 %02.0f", screenLight)
 	return str
 }
