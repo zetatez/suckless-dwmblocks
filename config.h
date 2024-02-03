@@ -18,10 +18,10 @@ static const Block blocks[] = {
   {"", PREFIX"/cpu"          ,3     ,0 },
   {"", PREFIX"/mem"          ,3     ,0 },
   // {"", PREFIX"/disk"         ,60    ,0 },
-  // {"", PREFIX"/weather"      ,3600  ,0 },
+  {"", PREFIX"/weather"      ,3600  ,0 },
   {"", PREFIX"/clock"        ,1     ,0 },
 };
 
 //sets delimeter between status commands. NULL character ('\0') means no delimeter.
-static char delim[] = " ";
+static char delim[] = "  ";
 static unsigned int delimLen = 3;

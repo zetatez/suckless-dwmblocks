@@ -35,6 +35,6 @@ func FormatMem() (str string) {
 	case memPercent < 100:
 		icon = icons["100"]
 	}
-	str = fmt.Sprintf("󰣉 %s", icon)
+	str = fmt.Sprintf("M: %s", icon)
 	return str
 }

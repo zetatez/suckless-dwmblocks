@@ -35,6 +35,6 @@ func FormatCpu() (str string) {
 	case cpuPercent < 100:
 		icon = icons["100"]
 	}
-	str = fmt.Sprintf(" %s", icon)
+	str = fmt.Sprintf("C: %s", icon)
 	return str
 }

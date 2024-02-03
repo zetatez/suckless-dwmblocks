@@ -15,6 +15,6 @@ func FormatWeather() (str string) {
 	if err != nil {
 		return ""
 	}
-	str = fmt.Sprintf("[weather]: %s %s", temp, wind)
+	str = fmt.Sprintf("Wea: %s %s", temp, wind)
 	return str
 }

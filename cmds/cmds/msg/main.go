@@ -21,7 +21,7 @@ func FormatMsg() (str string) {
 		return ""
 	}
 	if len(msgByte) != 0 {
-		str = fmt.Sprintf("[%s]", strings.TrimSpace(string(msgByte)))
+		str = strings.Trim(strings.TrimSpace(string(msgByte)), "\"")
 	}
 	return str
 }
