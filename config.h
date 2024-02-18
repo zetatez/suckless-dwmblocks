@@ -18,7 +18,7 @@ static const Block blocks[] = {
   {"", PREFIX"/cpu"          ,3     ,0 },
   {"", PREFIX"/mem"          ,3     ,0 },
   // {"", PREFIX"/disk"         ,60    ,0 },
-  {"", PREFIX"/weather"      ,3600  ,0 },
+  // {"", PREFIX"/weather"      ,3600  ,0 },
   {"", PREFIX"/clock"        ,1     ,0 },
 };
 
