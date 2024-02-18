@@ -28,7 +28,7 @@ func FormatBattery() (str string) {
 		"Unknown":      "󰂑",
 	}
 	switch {
-	case capacity < 25:
+	case (capacity < 25) && (status != "Charging"):
 		str = fmt.Sprintf("%s %02.0f", warn, capacity)
 	default:
 		str = fmt.Sprintf("%s %02.0f", statusIcons[status], capacity)
