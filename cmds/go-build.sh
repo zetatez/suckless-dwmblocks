@@ -10,7 +10,7 @@ go build -o ./bins/msg          ./cmds/msg/main.go &
 go build -o ./bins/net          ./cmds/net/main.go &
 wait
 go build -o ./bins/procs        ./cmds/procs/main.go &
-go build -o ./bins/mem          ./cmds/mem/main.go &
+go build -o ./bins/ram          ./cmds/ram/main.go &
 go build -o ./bins/screen-light ./cmds/screen-light/main.go &
 go build -o ./bins/volume       ./cmds/volume/main.go &
 go build -o ./bins/weather      ./cmds/weather/main.go &

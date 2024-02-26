@@ -7,10 +7,10 @@ import (
 )
 
 func main() {
-	fmt.Println(FormatMem())
+	fmt.Println(FormatRAM())
 }
 
-func FormatMem() (str string) {
+func FormatRAM() (str string) {
 	memPercent, err := sugar.GetMemPercent()
 	if err != nil {
 		return ""
@@ -35,6 +35,6 @@ func FormatMem() (str string) {
 	case memPercent < 100:
 		icon = icons["100"]
 	}
-	str = fmt.Sprintf("M: %s", icon)
+	str = fmt.Sprintf("R: %s", icon)
 	return str
 }
