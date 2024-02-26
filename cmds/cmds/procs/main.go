@@ -16,7 +16,6 @@ func FormatProcs() (str string) {
 	concernedProcsIcon := map[string]string{
 		"chrome":              "",
 		"clash":               "󰟾",
-		"clash":               "󰟾   ",
 		"ffmpeg":              "󰻃",
 		"flameshot":           "",
 		"inkscape":            "",
