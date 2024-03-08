@@ -1,5 +1,5 @@
 
-#define PREFIX "/home/dionysus/github/suckless-dwmblocks/cmds/bins"
+#define PREFIX "/home/dionysus/git/suckless-dwmblocks/cmds/bins"
 
 //Modify this file to change what commands output to your statusbar, and recompile using the make command.
 static const Block blocks[] = {
@@ -18,7 +18,7 @@ static const Block blocks[] = {
   {"", PREFIX"/cpu"          ,3     ,0 },
   {"", PREFIX"/mem"          ,3     ,0 },
   // {"", PREFIX"/disk"         ,60    ,0 },
-  {"", PREFIX"/weather"      ,3600  ,0 },
+  // {"", PREFIX"/weather"      ,3600  ,0 },
   {"", PREFIX"/clock"        ,1     ,0 },
 };
 
