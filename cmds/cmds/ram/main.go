@@ -35,6 +35,6 @@ func FormatRAM() (str string) {
 	case memPercent < 100:
 		icon = icons["100"]
 	}
-	str = fmt.Sprintf("R: %s", icon)
+	str = fmt.Sprintf("ram %s", icon)
 	return str
 }
