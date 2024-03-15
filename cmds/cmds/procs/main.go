@@ -15,26 +15,27 @@ func main() {
 func FormatProcs() (str string) {
 	concernedProcsIcon := map[string]string{
 		"chrome":              "",
-		"clash":               "󰜎 󰩈",
+		"clash":               "󱨑",
 		"ffmpeg":              "󰻃",
 		"flameshot":           "",
 		"inkscape":            "",
-		"julia":               "",
 		"jushuto":             "📂",
 		"krita":               "",
 		"msedge":              "󰌀",
-		"mutt":                "󰶉",
 		"ncmpcpp":             "󰝚",
 		"netease-cloud-music": "󰝚",
 		"obsidian":            "󱓩",
-		"python":              "",
-		"scala":               "",
 		"screenkey":           "",
 		"subl":                "",
 		"vim":                 "",
 		"wechat-uos":          "󰘑",
+		"wemeet":              "󱋒",
 		"xournalpp":           "󰽉",
 		"zathura":             "",
+		"zoom":                "󱐒",
+		// "julia":               "",
+		// "python":              "",
+		// "scala":               "",
 	}
 	procs, err := sugar.GetProcs()
 	if err != nil {
