@@ -178,21 +178,13 @@ func GetVolume() (offOrOn string, percent float64, err error) {
 	}
 	r := regexp.MustCompile(`\[(?P<percent>\d+)%\]`)
 	xs := r.FindAllStringSubmatch(string(out), -1)
-	if len(xs) != 2 {
+	if len(xs) != 1 {
 		return offOrOn, 0, fmt.Errorf("no volume found")
 	}
-	if len(xs[0]) != 2 {
-		return offOrOn, 0, fmt.Errorf("no volume found")
-	}
-	left, err := strconv.ParseFloat(xs[0][1], 64)
+	percent, err = strconv.ParseFloat(xs[0][1], 64)
 	if err != nil {
 		return offOrOn, 0, err
 	}
-	right, err := strconv.ParseFloat(xs[1][1], 64)
-	if err != nil {
-		return offOrOn, 0, err
-	}
-	percent = (left + right) / 2
 	return offOrOn, percent, nil
 }
 
