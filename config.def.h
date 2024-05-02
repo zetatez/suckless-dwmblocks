@@ -6,10 +6,10 @@
 static const Block blocks[] = {
     /*
      * Icon, Command, Update Interval, Update Signal
-     */
+    */
     // {"", PREFIX "/clean-msg", 30, 0},
     // {"", PREFIX "/msg", 1, 0},
-    {"", PREFIX "/procs", 3, 0},
+    // {"", PREFIX "/procs", 3, 0},
     // {"", PREFIX "/email", 900, 0},
     {"", PREFIX "/net", 3, 0},
     {"", PREFIX "/battery", 180, 0},
