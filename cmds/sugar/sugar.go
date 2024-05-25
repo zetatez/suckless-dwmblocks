@@ -18,6 +18,10 @@ import (
 	"github.com/shirou/gopsutil/process"
 )
 
+func Notify(msg ...interface{}) {
+	NewExecService().RunScriptShell(fmt.Sprintf("notify-send '%v'", msg))
+}
+
 func GetWeather() (temp, wind string, err error) {
 	resp, err := http.Get("https://v2.wttr.in")
 	if err != nil {
