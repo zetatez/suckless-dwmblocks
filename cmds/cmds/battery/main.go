@@ -29,18 +29,18 @@ func FormatBattery() (str string) {
 	}
 
 	if status == "Charging" {
-		str = fmt.Sprintf("%s %02.0f", statusIcons[status], capacity)
+		str = fmt.Sprintf("%s  %02.0f", statusIcons[status], capacity)
 		return str
 	}
 
 	switch {
 	case capacity < 5:
-		str = fmt.Sprintf("%s %02.0f", warn, capacity)
+		str = fmt.Sprintf("%s  %02.0f", warn, capacity)
 		sugar.Notify("Low battery! Less than 5%! Please plug in!")
 	case capacity < 25:
-		str = fmt.Sprintf("%s %02.0f", warn, capacity)
+		str = fmt.Sprintf("%s  %02.0f", warn, capacity)
 	default:
-		str = fmt.Sprintf("%s %02.0f", statusIcons[status], capacity)
+		str = fmt.Sprintf("%s  %02.0f", statusIcons[status], capacity)
 	}
 	return str
 }
