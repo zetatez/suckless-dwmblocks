@@ -1,5 +1,5 @@
 
-#define PREFIX "/home/shiyi/git/suckless-dwmblocks/cmds/bins"
+#define PREFIX "/home/shiyi/github/suckless-dwmblocks/cmds/bins"
 
 // Modify this file to change what commands output to your statusbar, and
 // recompile using the make command.
