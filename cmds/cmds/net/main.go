@@ -20,10 +20,10 @@ func FormatNet() (str string) {
 		return ""
 	}
 	operstateIcons := map[string]string{
-		"up":   "󰖩",
-		"down": "󰖪",
+		"up":   "󰒢",
+		"down": "󰞃",
 	}
 	state := operstateIcons[operstate]
 	ipAddr, _ := sugar.GetLocalIpv4ByInterfaceName("wlan0")
-	return fmt.Sprintf("%s %s", ipAddr, state)
+	return fmt.Sprintf("%s %s ", ipAddr, state)
 }

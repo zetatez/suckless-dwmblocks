@@ -16,6 +16,6 @@ func FormatDisk() (str string) {
 		return ""
 	}
 
-	str = fmt.Sprintf("[disk]: %.2f%%", diskPercent)
+	str = fmt.Sprintf("💽  %.2f%%", diskPercent)
 	return str
 }

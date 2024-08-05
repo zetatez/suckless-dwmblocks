@@ -15,7 +15,7 @@ func FormatRAM() (str string) {
 	if err != nil {
 		return ""
 	}
-	str = fmt.Sprintf("%02.0f", memPercent)
+	str = fmt.Sprintf("󰍛  %02.0f%%", memPercent)
 	return str
 }
 
