@@ -2,6 +2,7 @@ package sugar
 
 import (
 	"fmt"
+	"net"
 	"net/http"
 	"os"
 	"os/exec"
@@ -220,4 +221,23 @@ func GetMicro() (offOrOn string, percent float64, err error) {
 	}
 	percent = (left + right) / 2
 	return offOrOn, percent, nil
+}
+
+func GetLocalIpv4ByInterfaceName(interfaceName string) (addr string, err error) {
+	i, err := net.InterfaceByName(interfaceName)
+	if err != nil {
+		return "", err
+	}
+	addrs, err := i.Addrs()
+	if err != nil {
+		return "", err
+	}
+	for _, addr := range addrs {
+		ipNet, ok := addr.(*net.IPNet)
+		if !ok || ipNet.IP.To4() == nil {
+			continue
+		}
+		return ipNet.IP.To4().String(), nil
+	}
+	return "", fmt.Errorf("interface %s don't have an ipv4 addr", interfaceName)
 }
