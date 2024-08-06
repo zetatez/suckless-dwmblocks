@@ -15,6 +15,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/disk"
+	"github.com/shirou/gopsutil/host"
 	"github.com/shirou/gopsutil/mem"
 	"github.com/shirou/gopsutil/process"
 )
@@ -62,8 +63,19 @@ func GetCpuPercent() (percent float64, err error) {
 	return percent, nil
 }
 
-func GetCpuTemp() (temp float64, err error) {
-	return temp, nil
+func GetCpuTemperature() (avgTemerature float64, err error) {
+	sensors, err := host.SensorsTemperatures()
+	if err != nil {
+		return 0, err
+	}
+	ct, sum := 0.0, 0.0
+	for _, sensor := range sensors {
+		if strings.HasPrefix(sensor.SensorKey, "coretemp_core") && strings.HasSuffix(sensor.SensorKey, "_input") {
+			ct++
+			sum += sensor.Temperature
+		}
+	}
+	return sum / ct, nil
 }
 
 func GetMemPercent() (percent float64, err error) {
