@@ -29,5 +29,5 @@ func FormatNet() (str string) {
 		ipAddr = "127.0.0.1"
 	}
 	_, signal := sugar.GetActiveWifi()
-	return fmt.Sprintf("%s %s  %d%%", ipAddr, state, signal)
+	return fmt.Sprintf("%s %s  %02.0d%%", ipAddr, state, signal)
 }
