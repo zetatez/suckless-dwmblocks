@@ -11,5 +11,5 @@ func main() {
 }
 
 func FormatClock() (str string) {
-	return "⏲️  " + sugar.GetClock()
+	return sugar.GetClock()
 }

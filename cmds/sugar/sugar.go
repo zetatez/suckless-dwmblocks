@@ -50,8 +50,8 @@ func GetWeather() (temp, wind string, err error) {
 }
 
 func GetClock() (clock string) {
-	// return time.Now().Format("Mon, Jan/02 15:04:05 ")
-	return time.Now().Format("Jan/02 Mon 15:04:05 ")
+	return time.Now().Format("Mon Jan/02 15:04:05 ")
+	// return time.Now().Format("Jan/02 Mon 15:04:05 ")
 }
 
 func GetCpuTemperature() (avgTemerature float64, err error) {
