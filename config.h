@@ -17,10 +17,10 @@ static const Block blocks[] = {
     {"", PREFIX"/volume"         , 1    , 0},
     {"", PREFIX"/micro"          , 1    , 0},
     {"", PREFIX"/screen-light"   , 1    , 0},
+    {"", PREFIX"/cpu-temperature", 8    , 0},
     {"", PREFIX"/cpu"            , 4    , 0},
     {"", PREFIX"/ram"            , 4    , 0},
     {"", PREFIX"/disk"           , 60   , 0},
-    {"", PREFIX"/cpu-temperature", 4    , 0},
     {"", PREFIX"/clock"          , 1    , 0},
 };
 
