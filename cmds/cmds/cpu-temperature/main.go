@@ -7,10 +7,10 @@ import (
 )
 
 func main() {
-	fmt.Println(GetCpuTemperature())
+	fmt.Println(FormatCpuTemperature())
 }
 
-func GetCpuTemperature() (str string) {
+func FormatCpuTemperature() (str string) {
 	avgTemerature, err := sugar.GetCpuTemperature()
 	if err != nil {
 		return ""

@@ -17,6 +17,7 @@ build: prepare
 	go build -o ./bins/micro           ./cmds/micro/main.go
 	go build -o ./bins/msg             ./cmds/msg/main.go
 	go build -o ./bins/net             ./cmds/net/main.go
+	go build -o ./bins/wifi-intensity  ./cmds/wifi-intensity/main.go
 	go build -o ./bins/procs           ./cmds/procs/main.go
 	go build -o ./bins/ram             ./cmds/ram/main.go
 	go build -o ./bins/screen-light    ./cmds/screen-light/main.go

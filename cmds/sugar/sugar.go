@@ -54,15 +54,6 @@ func GetClock() (clock string) {
 	return time.Now().Format("Jan/02 Mon 15:04:05 ")
 }
 
-func GetCpuPercent() (percent float64, err error) {
-	percents, err := cpu.Percent(time.Second, false)
-	if err != nil {
-		return 0, err
-	}
-	percent = percents[0]
-	return percent, nil
-}
-
 func GetCpuTemperature() (avgTemerature float64, err error) {
 	sensors, err := host.SensorsTemperatures()
 	if err != nil {
@@ -76,6 +67,15 @@ func GetCpuTemperature() (avgTemerature float64, err error) {
 		}
 	}
 	return sum / ct, nil
+}
+
+func GetCpuPercent() (percent float64, err error) {
+	percents, err := cpu.Percent(time.Second, false)
+	if err != nil {
+		return 0, err
+	}
+	percent = percents[0]
+	return percent, nil
 }
 
 func GetMemPercent() (percent float64, err error) {
@@ -252,4 +252,21 @@ func GetLocalIpv4ByInterfaceName(interfaceName string) (addr string, err error) 
 		return ipNet.IP.To4().String(), nil
 	}
 	return "", fmt.Errorf("interface %s don't have an ipv4 addr", interfaceName)
+}
+
+func GetActiveWifi() (ssid string, signal int) {
+	stdout, _, err := NewExecService().RunScriptShell("nmcli -t -f ACTIVE,SSID,SIGNAL device wifi")
+	if err != nil {
+		return "", 0
+	}
+	lines := strings.Split(string(stdout), "\n")
+	for _, line := range lines {
+		fields := strings.Split(line, ":")
+		if len(fields) == 3 && fields[0] == "yes" {
+			ssid = fields[1]
+			signal, _ = strconv.Atoi(fields[2])
+			return ssid, signal
+		}
+	}
+	return "", 0
 }
