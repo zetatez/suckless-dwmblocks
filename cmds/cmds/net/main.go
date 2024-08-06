@@ -24,6 +24,10 @@ func FormatNet() (str string) {
 		"down": "󰞃",
 	}
 	state := operstateIcons[operstate]
-	ipAddr, _ := sugar.GetLocalIpv4ByInterfaceName("wlan0")
-	return fmt.Sprintf("%s %s ", ipAddr, state)
+	ipAddr, err := sugar.GetLocalIpv4ByInterfaceName("wlan0")
+	if err != nil {
+		ipAddr = "127.0.0.1"
+	}
+	_, signal := sugar.GetActiveWifi()
+	return fmt.Sprintf("%s %s %d%%", ipAddr, state, signal)
 }

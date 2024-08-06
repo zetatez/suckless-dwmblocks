@@ -13,7 +13,6 @@ static const Block blocks[] = {
     // {"", PREFIX"/weather"        , 3600 , 0},
     // {"", PREFIX"/procs"          , 3    , 0},
     {"", PREFIX"/net"            , 3    , 0},
-    {"", PREFIX"/wifi-intensity" , 30   , 0},
     {"", PREFIX"/battery"        , 3    , 0},
     {"", PREFIX"/volume"         , 1    , 0},
     {"", PREFIX"/micro"          , 1    , 0},
