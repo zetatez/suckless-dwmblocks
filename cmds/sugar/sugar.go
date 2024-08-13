@@ -184,43 +184,48 @@ func GetScreenLight() (percent float64, err error) {
 }
 
 func GetVolume() (offOrOn string, percent float64, err error) {
-	out, err := exec.Command("amixer", "get", "Master").Output()
+	stdout, _, err := NewExecService().RunScriptShell("amixer get Master")
 	if err != nil {
 		return "", 0, err
 	}
-	if strings.Contains(string(out), "[off]") {
+	if err != nil {
+		return "", 0, err
+	}
+	if strings.Contains(string(stdout), "[off]") {
 		offOrOn = "off"
 	} else {
 		offOrOn = "on"
 	}
 	r := regexp.MustCompile(`\[(?P<percent>\d+)%\]`)
-	xs := r.FindAllStringSubmatch(string(out), -1)
-	if len(xs) != 1 {
-		return offOrOn, 0, fmt.Errorf("no volume found")
+	xs := r.FindAllStringSubmatch(string(stdout), -1)
+	if len(xs) != 2 {
+		return offOrOn, 0, fmt.Errorf("get volume failed")
 	}
-	percent, err = strconv.ParseFloat(xs[0][1], 64)
+	left, err := strconv.ParseFloat(xs[0][1], 64)
 	if err != nil {
 		return offOrOn, 0, err
 	}
+	right, err := strconv.ParseFloat(xs[1][1], 64)
+	if err != nil {
+		return offOrOn, 0, err
+	}
+	percent = (left + right) / 2
 	return offOrOn, percent, nil
 }
 
 func GetMicro() (offOrOn string, percent float64, err error) {
-	out, err := exec.Command("amixer", "get", "Capture").Output()
+	stdout, _, err := NewExecService().RunScriptShell("amixer get Capture")
 	if err != nil {
 		return "", 0, err
 	}
-	if strings.Contains(string(out), "[off]") {
+	if strings.Contains(string(stdout), "[off]") {
 		offOrOn = "off"
 	} else {
 		offOrOn = "on"
 	}
 	r := regexp.MustCompile(`\[(?P<percent>\d+)%\]`)
-	xs := r.FindAllStringSubmatch(string(out), -1)
+	xs := r.FindAllStringSubmatch(string(stdout), -1)
 	if len(xs) != 2 {
-		return offOrOn, 0, fmt.Errorf("get micro failed")
-	}
-	if len(xs[0]) != 2 {
 		return offOrOn, 0, fmt.Errorf("get micro failed")
 	}
 	left, err := strconv.ParseFloat(xs[0][1], 64)
