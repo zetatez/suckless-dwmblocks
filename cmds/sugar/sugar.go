@@ -259,19 +259,20 @@ func GetLocalIpv4ByInterfaceName(interfaceName string) (addr string, err error) 
 	return "", fmt.Errorf("interface %s don't have an ipv4 addr", interfaceName)
 }
 
-func GetActiveWifi() (ssid string, signal int) {
+func GetActiveWifi() (ssid string, signal float64) {
 	stdout, _, err := NewExecService().RunScriptShell("nmcli -t -f ACTIVE,SSID,SIGNAL device wifi")
 	if err != nil {
-		return "", 0
+		return "", 0.0
 	}
 	lines := strings.Split(string(stdout), "\n")
 	for _, line := range lines {
 		fields := strings.Split(line, ":")
 		if len(fields) == 3 && fields[0] == "yes" {
 			ssid = fields[1]
-			signal, _ = strconv.Atoi(fields[2])
+			signalInt64, _ := strconv.Atoi(fields[2])
+			signal := float64(signalInt64)
 			return ssid, signal
 		}
 	}
-	return "", 0
+	return "", 0.0
 }
