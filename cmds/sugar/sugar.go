@@ -198,18 +198,16 @@ func GetVolume() (offOrOn string, percent float64, err error) {
 	}
 	r := regexp.MustCompile(`\[(?P<percent>\d+)%\]`)
 	xs := r.FindAllStringSubmatch(string(stdout), -1)
-	if len(xs) != 2 {
+	if len(xs) == 0 {
 		return offOrOn, 0, fmt.Errorf("get volume failed")
 	}
-	left, err := strconv.ParseFloat(xs[0][1], 64)
-	if err != nil {
-		return offOrOn, 0, err
+	sum, cnt := 0.0, 0.0
+	for _, x := range xs {
+		p, _ := strconv.ParseFloat(x[1], 64)
+		sum += p
+		cnt++
 	}
-	right, err := strconv.ParseFloat(xs[1][1], 64)
-	if err != nil {
-		return offOrOn, 0, err
-	}
-	percent = (left + right) / 2
+	percent = sum / cnt
 	return offOrOn, percent, nil
 }
 
@@ -225,18 +223,16 @@ func GetMicro() (offOrOn string, percent float64, err error) {
 	}
 	r := regexp.MustCompile(`\[(?P<percent>\d+)%\]`)
 	xs := r.FindAllStringSubmatch(string(stdout), -1)
-	if len(xs) != 2 {
+	if len(xs) == 0 {
 		return offOrOn, 0, fmt.Errorf("get micro failed")
 	}
-	left, err := strconv.ParseFloat(xs[0][1], 64)
-	if err != nil {
-		return offOrOn, 0, err
+	sum, cnt := 0.0, 0.0
+	for _, x := range xs {
+		p, _ := strconv.ParseFloat(x[1], 64)
+		sum += p
+		cnt++
 	}
-	right, err := strconv.ParseFloat(xs[1][1], 64)
-	if err != nil {
-		return offOrOn, 0, err
-	}
-	percent = (left + right) / 2
+	percent = sum / cnt
 	return offOrOn, percent, nil
 }
 
