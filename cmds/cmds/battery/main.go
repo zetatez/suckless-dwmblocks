@@ -39,6 +39,8 @@ func FormatBattery() (str string) {
 		sugar.Notify("Low battery! Less than 5%! Please plug in!")
 	case capacity < 25:
 		str = fmt.Sprintf("%s %02.0f%%", warn, capacity)
+	case capacity == 100:
+		str = fmt.Sprintf("%s %02.0f%%", statusIcons["Full"], capacity)
 	default:
 		str = fmt.Sprintf("%s %02.0f%%", statusIcons[status], capacity)
 	}
