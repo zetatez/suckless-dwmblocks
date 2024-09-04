@@ -29,5 +29,28 @@ func FormatNet() (str string) {
 		ipAddr = "127.0.0.1"
 	}
 	_, signal := sugar.GetActiveWifi()
-	return fmt.Sprintf("%s %s  %02.0f%%", ipAddr, state, signal)
+	sigIntens := map[string]string{
+		"90": "󰤨",
+		"75": "󰤥",
+		"50": "󰤢",
+		"25": "󰤟",
+		"5":  "󰤯",
+		"0":  "󰤮",
+	}
+	intens := "x"
+	switch {
+	case signal >= 90:
+		intens = sigIntens["90"]
+	case signal >= 75:
+		intens = sigIntens["75"]
+	case signal >= 50:
+		intens = sigIntens["50"]
+	case signal >= 25:
+		intens = sigIntens["25"]
+	case signal >= 5:
+		intens = sigIntens["5"]
+	default:
+		intens = sigIntens["0"]
+	}
+	return fmt.Sprintf("%s %s %s ", ipAddr, intens, state)
 }
