@@ -15,6 +15,7 @@ func FormatCpu() (str string) {
 	if err != nil {
 		return ""
 	}
-	str = fmt.Sprintf("  %02.0f%%", cpuPercent)
+	// str = fmt.Sprintf("  %02.0f%%", cpuPercent)
+	str = fmt.Sprintf("%s ", sugar.GetIconByPct(cpuPercent))
 	return str
 }

@@ -36,7 +36,7 @@ func FormatProcs() (str string) {
 		"julia":               "",
 		"python":              "",
 		"scala":               "",
-		// "vim":                 "",
+		"vim":                 "",
 	}
 	procs, err := sugar.GetProcs()
 	if err != nil {
@@ -67,6 +67,6 @@ func FormatProcs() (str string) {
 		procIconList = append(procIconList, concernedProcsIcon[proc])
 	}
 	sort.Strings(procIconList)
-	str = "< " + strings.Join(procIconList, " ") + " >"
+	str = "[ " + strings.Join(procIconList, " ") + " ]"
 	return str
 }

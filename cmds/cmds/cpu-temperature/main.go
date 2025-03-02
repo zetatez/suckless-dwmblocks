@@ -15,5 +15,5 @@ func FormatCpuTemperature() (str string) {
 	if err != nil {
 		return ""
 	}
-	return fmt.Sprintf("❄️ %02.0f󰔄", avgTemerature)
+	return fmt.Sprintf("%02.0f󰔄", avgTemerature)
 }
