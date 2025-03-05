@@ -25,7 +25,6 @@ func FormatProcs() (str string) {
 		"obsidian":            "󱓩",
 		"screenkey":           "",
 		"subl":                "",
-		"nvim":                "",
 		"wemeet":              "󱋒",
 		"xournalpp":           "󰽉",
 		"zathura":             "",

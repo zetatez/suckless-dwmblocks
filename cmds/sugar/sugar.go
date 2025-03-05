@@ -20,8 +20,8 @@ import (
 	"github.com/shirou/gopsutil/process"
 )
 
-func Notify(msg ...interface{}) {
-	NewExecService().RunScriptShell(fmt.Sprintf("notify-send '%v'", msg))
+func Notify(msg ...any) {
+	NewExecService().RunScript("bash", fmt.Sprintf("notify-send '%v'", msg))
 }
 
 func GetWeather() (temp, wind string, err error) {
@@ -184,7 +184,7 @@ func GetScreenLight() (percent float64, err error) {
 }
 
 func GetVolume() (offOrOn string, percent float64, err error) {
-	stdout, _, err := NewExecService().RunScriptShell("amixer get Master")
+	stdout, _, err := NewExecService().RunScript("bash", "amixer get Master")
 	if err != nil {
 		return "", 0, err
 	}
@@ -212,7 +212,7 @@ func GetVolume() (offOrOn string, percent float64, err error) {
 }
 
 func GetMicro() (offOrOn string, percent float64, err error) {
-	stdout, _, err := NewExecService().RunScriptShell("amixer get Capture")
+	stdout, _, err := NewExecService().RunScript("bash", "amixer get Capture")
 	if err != nil {
 		return "", 0, err
 	}
@@ -256,7 +256,7 @@ func GetLocalIpv4ByInterfaceName(interfaceName string) (addr string, err error) 
 }
 
 func GetActiveWifi() (ssid string, signal float64) {
-	stdout, _, err := NewExecService().RunScriptShell("nmcli -t -f ACTIVE,SSID,SIGNAL device wifi")
+	stdout, _, err := NewExecService().RunScript("bash", "nmcli -t -f ACTIVE,SSID,SIGNAL device wifi")
 	if err != nil {
 		return "", 0.0
 	}
