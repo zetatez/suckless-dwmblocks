@@ -38,7 +38,7 @@ void setupsignals();
 void sighandler(int signum);
 int getstatus(char *str, char *last);
 void statusloop();
-void termhandler();
+void termhandler(int signum);
 void pstdout();
 #ifndef NO_X
 void setroot();
@@ -187,7 +187,7 @@ void sighandler(int signum)
   writestatus();
 }
 
-void termhandler()
+void termhandler(int signum)
 {
   statusContinue = 0;
 }
