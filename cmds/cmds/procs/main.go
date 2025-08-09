@@ -66,6 +66,6 @@ func FormatProcs() (str string) {
 		procIconList = append(procIconList, concernedProcsIcon[proc])
 	}
 	sort.Strings(procIconList)
-	str = "< " + strings.Join(procIconList, " ") + " >"
+	str = "[ " + strings.Join(procIconList, " ") + " ]"
 	return str
 }
