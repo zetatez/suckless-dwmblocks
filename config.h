@@ -11,7 +11,7 @@ static const Block blocks[] = {
    {"", PREFIX"/msg"            , 1    , 0},
    {"", PREFIX"/procs"          , 3    , 0},
 // {"", PREFIX"/email"          , 900  , 0},
-// {"", PREFIX"/weather"        , 3600 , 0},
+   {"", PREFIX"/weather"        , 3600 , 0},
    {"", PREFIX"/net"            , 3    , 0},
    {"", PREFIX"/battery"        , 3    , 0},
    {"", PREFIX"/volume"         , 1    , 0},
@@ -26,5 +26,5 @@ static const Block blocks[] = {
 
 // sets delimeter between status commands. NULL character ('\0') means no
 // delimeter.
-static char delim[] = " ⧽ ";
+static char delim[] = "  ";
 static unsigned int delimLen = 8;
