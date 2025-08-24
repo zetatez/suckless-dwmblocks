@@ -23,6 +23,7 @@ build: prepare
 	go build -o ./bins/volume          ./cmds/volume/main.go
 	go build -o ./bins/weather         ./cmds/weather/main.go
 	go build -o ./bins/clean-msg       ./cmds/clean-msg/main.go
+	chmod +x ./bins/*
 
 .PHONY: default
 

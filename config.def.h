@@ -12,15 +12,15 @@ static const Block blocks[] = {
    {"", PREFIX"/procs"          , 3    , 0},
 // {"", PREFIX"/email"          , 900  , 0},
    {"", PREFIX"/weather"        , 3600 , 0},
-   {"", PREFIX"/net"            , 3    , 0},
-   {"", PREFIX"/battery"        , 3    , 0},
    {"", PREFIX"/volume"         , 1    , 0},
    {"", PREFIX"/micro"          , 1    , 0},
    {"", PREFIX"/screen-light"   , 1    , 0},
    {"", PREFIX"/cpu-temperature", 8    , 0},
+   {"", PREFIX"/net"            , 3    , 0},
+// {"", PREFIX"/disk"           , 60   , 0},
    {"", PREFIX"/cpu"            , 4    , 0},
    {"", PREFIX"/ram"            , 4    , 0},
-// {"", PREFIX"/disk"           , 60   , 0},
+   {"", PREFIX"/battery"        , 3    , 0},
    {"", PREFIX"/clock"          , 1    , 0},
 };
 

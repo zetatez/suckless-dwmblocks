@@ -19,11 +19,9 @@ func FormatNet() (str string) {
 	if err != nil {
 		return ""
 	}
-	operstateIcons := map[string]string{
-		"up":   "󰒢",
-		"down": "󰞃",
+	if operstate == "down" {
+		return "󰞃"
 	}
-	state := operstateIcons[operstate]
 	// ipAddr, err := sugar.GetLocalIpv4ByInterfaceName("wlan0")
 	// if err != nil {
 	// 	ipAddr = "127.0.0.1"
@@ -37,7 +35,7 @@ func FormatNet() (str string) {
 		"5":  "󰤯",
 		"0":  "󰤮",
 	}
-	intens := "x"
+	intens := "󰤮"
 	switch {
 	case signal >= 90:
 		intens = sigIntens["90"]
@@ -52,6 +50,5 @@ func FormatNet() (str string) {
 	default:
 		intens = sigIntens["0"]
 	}
-	// return fmt.Sprintf("%s %s %s ", ipAddr, intens, state)
-	return fmt.Sprintf("%s %s ", intens, state)
+	return fmt.Sprintf("%s ", intens)
 }
