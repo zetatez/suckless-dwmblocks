@@ -11,7 +11,6 @@ static const Block blocks[] = {
    {"", PREFIX"/msg"            , 1    , 0},
    {"", PREFIX"/procs"          , 3    , 0},
 // {"", PREFIX"/email"          , 900  , 0},
-   {"", PREFIX"/weather"        , 3600 , 0},
    {"", PREFIX"/volume"         , 1    , 0},
    {"", PREFIX"/micro"          , 1    , 0},
    {"", PREFIX"/screen-light"   , 1    , 0},
@@ -22,6 +21,7 @@ static const Block blocks[] = {
    {"", PREFIX"/ram"            , 4    , 0},
    {"", PREFIX"/battery"        , 3    , 0},
    {"", PREFIX"/clock"          , 1    , 0},
+   {"", PREFIX"/weather"        , 3600 , 0},
 };
 
 // sets delimeter between status commands. NULL character ('\0') means no

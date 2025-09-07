@@ -59,27 +59,22 @@ static char statusbar[LENGTH(blocks)][CMDLENGTH] = {0};
 static char statusstr[2][STATUSLENGTH];
 static int statusContinue = 1;
 
-// opens process *cmd and stores output in *output
-void getcmd(const Block *block, char *output)
-{
-  strcpy(output, block->icon);
- 	FILE *cmdf = popen(block->command, "r");
-  if (!cmdf)
-    return;
-  int i = strlen(block->icon);
-  fgets(output+i, CMDLENGTH-i-delimLen, cmdf);
-  i = strlen(output);
-  if (i == 0) { // return if block and command output are both empty
-    pclose(cmdf);
-    return;
+void getcmd(const Block *block, char *output) {
+  size_t icon_len = strlen(block->icon);
+  snprintf(output, CMDLENGTH, "%s", block->icon);
+
+  FILE *cmdf = popen(block->command, "r");
+  if (!cmdf) return;
+
+  if (fgets(output + icon_len, CMDLENGTH - icon_len - delimLen, cmdf)) {
+    size_t len = strlen(output);
+    if (len > 0 && output[len - 1] == '\n') {
+      output[--len] = '\0';
+    }
+    if (delim[0] != '\0') {
+      strncat(output, delim, CMDLENGTH - len - 1);
+    }
   }
-  // only chop off newline if one is present at the end
-  i = output[i-1] == '\n' ? i-1 : i;
-  if (delim[0] != '\0') {
-    strncpy(output+i, delim, delimLen);
-  }
-  else
-    output[i++] = '\0';
   pclose(cmdf);
 }
 
@@ -103,29 +98,37 @@ void getsigcmds(unsigned int signal)
   }
 }
 
-void setupsignals()
-{
+void setupsignals() {
 #ifndef __OpenBSD__
-  /* initialize all real time signals with dummy handler */
-  for (int i = SIGRTMIN; i <= SIGRTMAX; i++)
-    signal(i, dummysighandler);
+  struct sigaction sa = {0};
+  sa.sa_handler = dummysighandler;
+  for (int i = SIGRTMIN; i <= SIGRTMAX; i++) {
+    sigaction(i, &sa, NULL);
+  }
 #endif
 
+  struct sigaction sa_usr = {0};
+  sa_usr.sa_handler = sighandler;
   for (unsigned int i = 0; i < LENGTH(blocks); i++) {
     if (blocks[i].signal > 0) {
-      signal(SIGMINUS+blocks[i].signal, sighandler);
+      sigaction(SIGMINUS + blocks[i].signal, &sa_usr, NULL);
     }
   }
 }
 
-int getstatus(char *str, char *last)
-{
-  strcpy(last, str);
+int getstatus(char *str, char *last) {
   str[0] = '\0';
-  for (unsigned int i = 0; i < LENGTH(blocks); i++)
-    strcat(str, statusbar[i]);
-  str[strlen(str)-strlen(delim)] = '\0';
-  return strcmp(str, last); // 0 if they are the same
+  for (unsigned int i = 0; i < LENGTH(blocks); i++) {
+    strncat(str, statusbar[i], STATUSLENGTH - strlen(str) - 1);
+  }
+  // 删除最后的分隔符
+  size_t len = strlen(str);
+  if (len >= delimLen) {
+    str[len - delimLen] = '\0';
+  }
+  if (strcmp(str, last) == 0) return 0;
+  strcpy(last, str);
+  return 1;
 }
 
 #ifndef NO_X
