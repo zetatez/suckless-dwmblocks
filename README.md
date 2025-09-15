@@ -1,4 +1,4 @@
-# suckless-dwmblock
+# suckless-dwmblocks
 
 A lightweight [dwm](https://dwm.suckless.org/) status bar updater written in **Go**.
 It updates the status bar at fixed intervals or on demand via Unix signals.
@@ -13,8 +13,8 @@ It updates the status bar at fixed intervals or on demand via Unix signals.
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/zetatez/dwm-statusbar-go.git
-cd suckless-dwmblock
+git clone https://github.com/zetatez/suckless-dwmblocks.git
+cd suckless-dwmblocks
 make install
 ```
 
@@ -31,13 +31,13 @@ make install
 2. Run it in the background:
 
    ```bash
-   ./dwmblock &
+   ./dwmblocks &
    ```
 
 3. Trigger a block update via signal:
 
    ```bash
-   kill -10 $(pidof dwmblock)   # refresh block with signal ID = 10
+   kill -10 $(pidof dwmblocks)   # refresh block with signal ID = 10
    ```
 
 ## ⚙️ How it works
