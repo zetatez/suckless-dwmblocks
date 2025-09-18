@@ -11,7 +11,7 @@ func BlockDisk() string {
 	if err != nil {
 		return ""
 	}
-	return fmt.Sprintf("💽%02.0f%%", diskPercent)
+	return fmt.Sprintf("💽%02.0f", diskPercent)
 }
 
 func GetDiskPercent() (percent float64, err error) {

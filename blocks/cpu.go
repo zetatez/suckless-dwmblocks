@@ -9,7 +9,7 @@ func BlockCPU() string {
 	if err != nil {
 		return "CPU: ?"
 	}
-	// return fmt.Sprintf("%s %02.0f%%", GetIconByPct(pct), pct)
+	// return fmt.Sprintf("%s %02.0f", GetIconByPct(pct), pct)
 	return GetIconByPct(pct)
 }
 
