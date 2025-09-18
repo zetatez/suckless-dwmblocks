@@ -17,7 +17,7 @@ func BlockMicro() string {
 		"on":  "󰍬",
 		"off": "󰍭",
 	}
-	return fmt.Sprintf("%s %02.0f%%", statusIcons[status], pct)
+	return fmt.Sprintf("%s %02.0f", statusIcons[status], pct)
 }
 
 func GetMicro() (status string, percent float64, err error) {

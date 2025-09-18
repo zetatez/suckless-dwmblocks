@@ -36,20 +36,20 @@ func BlockBattery() string {
 func formatBattery(capacity float64, status string) string {
 	switch {
 	case status == "Charging":
-		return fmt.Sprintf("%s %02.0f%%", statusIcons[status], capacity)
+		return fmt.Sprintf("%s %02.0f", statusIcons[status], capacity)
 	case capacity <= CriticalBattery:
-		utils.Notify(fmt.Sprintf("Critical battery! %02.0f%% remaining", capacity))
-		return fmt.Sprintf("%s %02.0f%%", statusIcons["Warning"], capacity)
+		utils.Notify(fmt.Sprintf("Critical battery! %02.0f remaining", capacity))
+		return fmt.Sprintf("%s %02.0f", statusIcons["Warning"], capacity)
 	case capacity < LowBatteryWarn:
-		return fmt.Sprintf("%s %02.0f%%", statusIcons["Warning"], capacity)
+		return fmt.Sprintf("%s %02.0f", statusIcons["Warning"], capacity)
 	case capacity == 100:
-		return fmt.Sprintf("%s %02.0f%%", statusIcons["Full"], capacity)
+		return fmt.Sprintf("%s %02.0f", statusIcons["Full"], capacity)
 	default:
 		icon, ok := statusIcons[status]
 		if !ok {
 			icon = statusIcons["Unknown"]
 		}
-		return fmt.Sprintf("%s %02.0f%%", icon, capacity)
+		return fmt.Sprintf("%s %02.0f", icon, capacity)
 	}
 }
 

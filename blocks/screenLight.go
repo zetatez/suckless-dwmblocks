@@ -10,9 +10,9 @@ import (
 func BlockScreenLight() string {
 	pct, err := GetScreenLight()
 	if err != nil {
-		return "󱩒 --%"
+		return "󱩒 --"
 	}
-	return fmt.Sprintf("󱩒 %02.0f%%", pct)
+	return fmt.Sprintf("󱩒 %02.0f", pct)
 }
 
 func GetScreenLight() (float64, error) {
