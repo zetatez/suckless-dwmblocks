@@ -50,7 +50,7 @@ func main() {
 		case <-ticker.C:
 			GetCmdsAtTime(i)
 			UpdateStatus()
-			i += 1
+			i = (i + 1) % 86400
 		case s := <-sigCh:
 			switch s {
 			case syscall.SIGTERM, syscall.SIGINT:
