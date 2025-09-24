@@ -9,6 +9,7 @@ import (
 	"strings"
 	"syscall"
 	"time"
+	"fmt"
 )
 
 var (
@@ -132,7 +133,9 @@ func BuildStatus() string {
 func UpdateStatus() {
 	status := BuildStatus()
 	if status != lastStatus {
-		write(status)
+		if err := write(status); err != nil {
+			fmt.Printf("Error writing status: %s", err)
+		}
 		lastStatus = status
 	}
 }
