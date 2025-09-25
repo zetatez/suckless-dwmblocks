@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"os"
 	"os/exec"
 	"os/signal"
@@ -9,7 +10,6 @@ import (
 	"strings"
 	"syscall"
 	"time"
-	"fmt"
 )
 
 var (
