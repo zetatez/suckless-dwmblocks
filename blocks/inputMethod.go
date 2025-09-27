@@ -8,9 +8,9 @@ import (
 func BlockInputMethod() string {
 	inputMethod, err := GetInputMethod()
 	if err != nil {
-		return "󰌌 ?"
+		return " ?"
 	}
-	return fmt.Sprintf("󰌌 %s", inputMethod)
+	return fmt.Sprintf(" %s", inputMethod)
 }
 
 func GetInputMethod() (string, error) {

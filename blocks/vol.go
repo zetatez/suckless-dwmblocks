@@ -14,8 +14,8 @@ func BlockVol() string {
 		return "?"
 	}
 	statusIcons := map[string]string{
-		"on":  "󰕾",
-		"off": "󰖁",
+		"on":  "🎧",
+		"off": "󰟎",
 	}
 	return fmt.Sprintf("%s %02.0f", statusIcons[status], pct)
 }

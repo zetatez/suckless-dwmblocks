@@ -9,26 +9,23 @@ import (
 
 func BlockProcs() string {
 	concernedProcsIcon := map[string]string{
-		"chrome":              "󰊭",
-		"clash":               "🌏",
-		"dockerd":             "",
-		"ffmpeg":              "",
 		"flameshot":           "",
+		"vim":                 "",
+		"subl":                "",
+		"ffmpeg":              "",
 		"inkscape":            "",
 		"krita":               "",
-		"lazygit":             "󰊢",
 		"ncmpcpp":             "󰝚",
 		"netease-cloud-music": "󰝚",
 		"obsidian":            "󱓩",
-		"screenkey":           "",
-		"subl":                "",
-		"vim":                 "",
 		"wechat-uos":          "󰘑",
 		"wemeet":              "󱋒",
-		"xournalpp":           "󰽉",
-		"yazi":                "",
-		"zathura":             "",
 		"zoom":                "󱐒",
+		"xournalpp":           "󰽉",
+		"zathura":             "",
+		"dockerd":             "",
+		"chrome":              "󰊭",
+		"clash":               "🌐",
 	}
 
 	procs, err := process.Processes()

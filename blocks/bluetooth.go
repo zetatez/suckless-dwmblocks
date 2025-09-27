@@ -2,8 +2,8 @@ package blocks
 
 import (
 	"fmt"
-	"strings"
 	"github.com/godbus/dbus/v5"
+	"strings"
 )
 
 func BlockBluetoothConnectedDevices() string {
@@ -12,7 +12,7 @@ func BlockBluetoothConnectedDevices() string {
 		return " ?"
 	}
 	if len(connectedDevices) == 0 {
-		return "--"
+		return ""
 	}
 	str := " "
 	delimiter := "|"
@@ -46,7 +46,7 @@ func GetBlueToothConnectedDevices() ([]Device, error) {
 			if connected {
 				name := dev["Name"].Value().(string)
 				addr := dev["Address"].Value().(string)
-				connectedDevices = append(connectedDevices, Device{Name: name, Addr: addr,})
+				connectedDevices = append(connectedDevices, Device{Name: name, Addr: addr})
 			}
 		}
 	}
