@@ -103,11 +103,17 @@ func GetCmd(b Block) string {
 }
 
 func GetCmdsAtTime(t int64) {
-	for i, b := range Blocks {
-		if (b.Interval != 0 && t%b.Interval == 0) || t == -1 {
-			statusbar[i] = GetCmd(b)
-		}
-	}
+    var wg sync.WaitGroup
+    for i, b := range Blocks {
+        if (b.Interval != 0 && t%b.Interval == 0) || t == -1 {
+            wg.Add(1)
+            go func(i int, b Block) {
+                defer wg.Done()
+                statusbar[i] = GetCmd(b)
+            }(i, b)
+        }
+    }
+    wg.Wait()
 }
 
 func GetSigCmds(sig uint) {
