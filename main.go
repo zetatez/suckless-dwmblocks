@@ -12,6 +12,14 @@ import (
 	"time"
 )
 
+type Block struct {
+	Interval int64
+	Signal   uint
+	Icon     string
+	Func     func() string
+	Command  string
+}
+
 var (
 	statusbar  []string
 	lastStatus string
