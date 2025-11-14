@@ -18,19 +18,27 @@ var (
 )
 
 var (
-	SIGPLUS  syscall.Signal
-	SIGMINUS syscall.Signal
+    SIGPLUS  syscall.Signal
+    SIGMINUS syscall.Signal
 )
 
 func init() {
-	if runtime.GOOS == "openbsd" {
-		SIGPLUS = syscall.Signal(int(syscall.SIGUSR1) + 1)
-		SIGMINUS = syscall.Signal(int(syscall.SIGUSR1) - 1)
-	} else {
-		const linuxSIGRTMIN = 34
-		SIGPLUS = syscall.Signal(linuxSIGRTMIN)
-		SIGMINUS = syscall.Signal(linuxSIGRTMIN)
-	}
+    initSignals()
+}
+
+func initSignals() {
+    switch runtime.GOOS {
+    case "openbsd":
+        SIGPLUS  = syscall.Signal(int(syscall.SIGUSR1) + 1)
+        SIGMINUS = syscall.Signal(int(syscall.SIGUSR1) - 1)
+    case "linux":
+        const defaultSIGRTMIN = 34
+        SIGPLUS  = syscall.Signal(defaultSIGRTMIN)
+        SIGMINUS = syscall.Signal(defaultSIGRTMIN + 1)
+    default:
+        SIGPLUS  = syscall.SIGUSR1
+        SIGMINUS = syscall.SIGUSR2
+    }
 }
 
 func main() {
