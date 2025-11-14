@@ -81,12 +81,15 @@ func SetupSignalNotifications(sigc chan os.Signal) {
 	}
 }
 
-func RunCmd(cmd string) (string, error) {
-	c := exec.Command("sh", "-c", cmd)
-	var out bytes.Buffer
-	c.Stdout = &out
-	err := c.Run()
-	return strings.TrimSpace(out.String()), err
+func RunCmd(cmd string, timeout time.Duration) (string, error) {
+    ctx, cancel := context.WithTimeout(context.Background(), timeout)
+    defer cancel()
+    c := exec.CommandContext(ctx, "sh", "-c", cmd)
+    var out bytes.Buffer
+    c.Stdout = &out
+    c.Stderr = &out
+    err := c.Run()
+    return strings.TrimSpace(out.String()), err
 }
 
 func GetCmd(b Block) string {
@@ -94,7 +97,7 @@ func GetCmd(b Block) string {
 		return b.Icon + b.Func()
 	}
 	if b.Command != "" {
-		out, err := RunCmd(b.Command)
+		out, err := RunCmd(b.Command, time.Second)
 		if err == nil {
 			return b.Icon + out
 		}
