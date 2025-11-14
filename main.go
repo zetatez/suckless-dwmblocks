@@ -85,7 +85,8 @@ func RunCmd(cmd string) (string, error) {
 	c := exec.Command("sh", "-c", cmd)
 	var out bytes.Buffer
 	c.Stdout = &out
-	return strings.TrimSpace(out.String()), c.Run()
+	err := c.Run()
+    return strings.TrimSpace(out.String()), err
 }
 
 func GetCmd(b Block) string {
