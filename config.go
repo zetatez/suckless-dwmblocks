@@ -6,14 +6,6 @@ import (
 
 var Delim = "  "
 
-type Block struct {
-	Interval int64
-	Signal   uint
-	Icon     string
-	Func     func() string
-	Command  string
-}
-
 var Blocks = []Block{
 	{Interval: 3, Signal: 7, Icon: "", Func: blocks.BlockProcs},
 	{Interval: 1, Signal: 7, Icon: "", Func: blocks.BlockBluetoothConnectedDevices},
