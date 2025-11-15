@@ -15,9 +15,8 @@ import (
 )
 
 type Block struct {
-	Interval time.Duration
 	Signal   uint
-	Icon     string
+	Interval time.Duration
 	Func     func() string
 	Command  string
 
@@ -69,7 +68,7 @@ func main() {
 	sigCh := make(chan os.Signal, 10)
 	SetupSignalNotifications(sigCh)
 
-	RunDueBlocks()
+	RunOnceAllBlocks()
 	UpdateStatus()
 
 	for {
@@ -154,15 +153,28 @@ func GetCmd(b Block) string {
 		}
 	}()
 	if b.Func != nil {
-		return b.Icon + b.Func()
+		return b.Func()
 	}
 	if b.Command != "" {
 		out, err := RunCmd(b.Command, time.Second)
 		if err == nil {
-			return b.Icon + out
+			return out
 		}
 	}
-	return b.Icon
+	return ""
+}
+
+func RunOnceAllBlocks() {
+	var wg sync.WaitGroup
+	for i := range Blocks {
+		b := &Blocks[i]
+		wg.Add(1)
+		go func(i int, b *Block) {
+			defer wg.Done()
+			statusbar[i] = GetCmd(*b)
+		}(i, b)
+	}
+	wg.Wait()
 }
 
 func RunDueBlocks() {
@@ -179,7 +191,6 @@ func RunDueBlocks() {
 			}(i, b)
 		}
 	}
-
 	wg.Wait()
 }
 
