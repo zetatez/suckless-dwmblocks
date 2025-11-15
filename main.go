@@ -2,12 +2,14 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"os"
 	"os/exec"
 	"os/signal"
 	"runtime"
 	"strings"
+	"sync"
 	"syscall"
 	"time"
 )
@@ -26,27 +28,27 @@ var (
 )
 
 var (
-    SIGPLUS  syscall.Signal
-    SIGMINUS syscall.Signal
+	SIGPLUS  syscall.Signal
+	SIGMINUS syscall.Signal
 )
 
 func init() {
-    initSignals()
+	initSignals()
 }
 
 func initSignals() {
-    switch runtime.GOOS {
-    case "openbsd":
-        SIGPLUS  = syscall.Signal(int(syscall.SIGUSR1) + 1)
-        SIGMINUS = syscall.Signal(int(syscall.SIGUSR1) - 1)
-    case "linux":
-        const defaultSIGRTMIN = 34
-        SIGPLUS  = syscall.Signal(defaultSIGRTMIN)
-        SIGMINUS = syscall.Signal(defaultSIGRTMIN + 1)
-    default:
-        SIGPLUS  = syscall.SIGUSR1
-        SIGMINUS = syscall.SIGUSR2
-    }
+	switch runtime.GOOS {
+	case "openbsd":
+		SIGPLUS = syscall.Signal(int(syscall.SIGUSR1) + 1)
+		SIGMINUS = syscall.Signal(int(syscall.SIGUSR1) - 1)
+	case "linux":
+		const defaultSIGRTMIN = 34
+		SIGPLUS = syscall.Signal(defaultSIGRTMIN)
+		SIGMINUS = syscall.Signal(defaultSIGRTMIN + 1)
+	default:
+		SIGPLUS = syscall.SIGUSR1
+		SIGMINUS = syscall.SIGUSR2
+	}
 }
 
 func main() {
@@ -98,14 +100,14 @@ func SetupSignalNotifications(sigc chan os.Signal) {
 }
 
 func RunCmd(cmd string, timeout time.Duration) (string, error) {
-    ctx, cancel := context.WithTimeout(context.Background(), timeout)
-    defer cancel()
-    c := exec.CommandContext(ctx, "sh", "-c", cmd)
-    var out bytes.Buffer
-    c.Stdout = &out
-    c.Stderr = &out
-    err := c.Run()
-    return strings.TrimSpace(out.String()), err
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+	c := exec.CommandContext(ctx, "sh", "-c", cmd)
+	var out bytes.Buffer
+	c.Stdout = &out
+	c.Stderr = &out
+	err := c.Run()
+	return strings.TrimSpace(out.String()), err
 }
 
 func GetCmd(b Block) string {
@@ -122,17 +124,17 @@ func GetCmd(b Block) string {
 }
 
 func GetCmdsAtTime(t int64) {
-    var wg sync.WaitGroup
-    for i, b := range Blocks {
-        if (b.Interval != 0 && t%b.Interval == 0) || t == -1 {
-            wg.Add(1)
-            go func(i int, b Block) {
-                defer wg.Done()
-                statusbar[i] = GetCmd(b)
-            }(i, b)
-        }
-    }
-    wg.Wait()
+	var wg sync.WaitGroup
+	for i, b := range Blocks {
+		if (b.Interval != 0 && t%b.Interval == 0) || t == -1 {
+			wg.Add(1)
+			go func(i int, b Block) {
+				defer wg.Done()
+				statusbar[i] = GetCmd(b)
+			}(i, b)
+		}
+	}
+	wg.Wait()
 }
 
 func GetSigCmds(sig uint) {
