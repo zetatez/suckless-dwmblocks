@@ -22,7 +22,7 @@ make install
 
 1. Define your blocks in `./config.go`:
 
-   * `Interval`: update frequency in seconds (`0` = never update automatically)
+   * `Interval`: update frequency
    * `Signal`: signal ID to trigger manual updates
    * `Icon`: prefix icon/string for the block
    * `Command`: shell command to run (optional)
