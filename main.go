@@ -15,11 +15,13 @@ import (
 )
 
 type Block struct {
-	Interval int64
+	Interval time.Duration
 	Signal   uint
 	Icon     string
 	Func     func() string
 	Command  string
+
+	nextRun time.Time
 }
 
 var (
@@ -33,7 +35,17 @@ var (
 )
 
 func init() {
+	initBlocks()
 	initSignals()
+}
+
+func initBlocks() {
+	now := time.Now()
+	for i := range Blocks {
+		if Blocks[i].Interval > 0 {
+			Blocks[i].nextRun = now
+		}
+	}
 }
 
 func initSignals() {
@@ -57,37 +69,62 @@ func main() {
 	sigCh := make(chan os.Signal, 10)
 	SetupSignalNotifications(sigCh)
 
-	GetCmdsAtTime(-1)
+	RunDueBlocks()
 	UpdateStatus()
 
-	ticker := time.NewTicker(time.Second)
-	defer ticker.Stop()
-
-	var i int64 = 0
 	for {
+		next := NextWakeUpDuration()
 		select {
-		case <-ticker.C:
-			GetCmdsAtTime(i)
+		case <-time.After(next):
+			RunDueBlocks()
 			UpdateStatus()
-			i = (i + 1) % 86400
 		case s := <-sigCh:
 			switch s {
 			case syscall.SIGTERM, syscall.SIGINT:
 				return
 			default:
 				if sig, ok := s.(syscall.Signal); ok {
-					off := int(sig) - int(SIGPLUS)
-					if off < 0 {
-						off = int(sig) - int(SIGMINUS)
-					}
-					if off >= 0 {
-						GetSigCmds(uint(off))
+					idx, ok := BlockIdxFromSignal(sig)
+					if ok {
+						GetSigCmds(uint(idx))
 						UpdateStatus()
 					}
 				}
 			}
 		}
 	}
+}
+
+func NextWakeUpDuration() time.Duration {
+	now := time.Now()
+	next := time.Duration(1 << 62)
+	for _, b := range Blocks {
+		if b.Interval <= 0 {
+			continue
+		}
+		if b.nextRun.After(now) {
+			d := b.nextRun.Sub(now)
+			if d < next {
+				next = d
+			}
+		} else {
+			return 0
+		}
+	}
+	if next == time.Duration(1<<62) {
+		return time.Second
+	}
+	return next
+}
+
+func BlockIdxFromSignal(sig syscall.Signal) (int, bool) {
+	if sig >= SIGPLUS {
+		return int(sig - SIGPLUS), true
+	}
+	if sig >= SIGMINUS {
+		return int(sig - SIGMINUS), true
+	}
+	return 0, false
 }
 
 func SetupSignalNotifications(sigc chan os.Signal) {
@@ -111,6 +148,11 @@ func RunCmd(cmd string, timeout time.Duration) (string, error) {
 }
 
 func GetCmd(b Block) string {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("block panic: ", r)
+		}
+	}()
 	if b.Func != nil {
 		return b.Icon + b.Func()
 	}
@@ -123,17 +165,21 @@ func GetCmd(b Block) string {
 	return b.Icon
 }
 
-func GetCmdsAtTime(t int64) {
+func RunDueBlocks() {
+	now := time.Now()
 	var wg sync.WaitGroup
-	for i, b := range Blocks {
-		if (b.Interval != 0 && t%b.Interval == 0) || t == -1 {
+	for i := range Blocks {
+		b := &Blocks[i]
+		if b.Interval > 0 && !now.Before(b.nextRun) {
 			wg.Add(1)
-			go func(i int, b Block) {
+			go func(i int, b *Block) {
 				defer wg.Done()
-				statusbar[i] = GetCmd(b)
+				statusbar[i] = GetCmd(*b)
+				b.nextRun = now.Add(b.Interval)
 			}(i, b)
 		}
 	}
+
 	wg.Wait()
 }
 
@@ -169,5 +215,7 @@ func UpdateStatus() {
 }
 
 func write(s string) error {
+	_, cancel := context.WithTimeout(context.Background(), 500*time.Millisecond)
+	defer cancel()
 	return exec.Command("xsetroot", "-name", s).Run()
 }
