@@ -32,6 +32,7 @@ func GetBlueToothConnectedDevices() ([]Device, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to system bus: %v", err)
 	}
+	defer conn.Close()
 	// get all objects managed by BlueZ
 	manager := conn.Object("org.bluez", "/")
 	var objs map[dbus.ObjectPath]map[string]map[string]dbus.Variant

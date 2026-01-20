@@ -36,9 +36,15 @@ func GetVolume() (status string, percent float64, err error) {
 	}
 	sum, cnt := 0.0, 0.0
 	for _, x := range xs {
-		p, _ := strconv.ParseFloat(x[1], 64)
+		p, err := strconv.ParseFloat(x[1], 64)
+		if err != nil {
+			continue
+		}
 		sum += p
 		cnt++
+	}
+	if cnt == 0 {
+		return status, 0.0, fmt.Errorf("get volume failed")
 	}
 	percent = sum / cnt
 	return status, percent, nil

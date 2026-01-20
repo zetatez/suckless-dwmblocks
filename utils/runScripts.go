@@ -32,5 +32,9 @@ func RunScript(lang, script string) (stdout, stderr string, err error) {
 
 func Notify(msg ...any) {
 	msgStr := strings.TrimSpace(fmt.Sprint(msg...))
-	RunScript("bash", fmt.Sprintf("notify-send %q", msgStr))
+	if msgStr == "" {
+		return
+	}
+	cmd := exec.Command("notify-send", msgStr)
+	cmd.Run()
 }

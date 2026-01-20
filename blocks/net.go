@@ -62,9 +62,11 @@ func GetActiveWifi() (ssid string, signal float64) {
 		fields := strings.Split(line, ":")
 		if len(fields) == 3 && (fields[0] == "yes" || fields[0] == "是") {
 			ssid = fields[1]
-			signalInt64, _ := strconv.Atoi(fields[2])
-			signal := float64(signalInt64)
-			return ssid, signal
+			signalInt64, err := strconv.Atoi(fields[2])
+			if err != nil {
+				return ssid, 0.0
+			}
+			return ssid, float64(signalInt64)
 		}
 	}
 	return "", 0.0
