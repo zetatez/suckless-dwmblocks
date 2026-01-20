@@ -1,44 +1,34 @@
 package blocks
 
 import (
-	"dwmblocks/utils"
 	"fmt"
 	"os"
+	"os/exec"
 	"path"
 	"strconv"
 	"strings"
 )
-
-const NetPath = "/sys/class/net/wlan0"
 
 func BlockNet() string {
 	state, err := GetNetState("wlan0")
 	if err != nil || state == "down" {
 		return "󰞃"
 	}
-	_, signal := GetActiveWifi()
-	signalIcon := map[string]string{
-		"90": "󰤨",
-		"75": "󰤥",
-		"50": "󰤢",
-		"25": "󰤟",
-		"5":  "󰤯",
-		"0":  "󰤮",
-	}
+	signal, _ := GetWirelessSignalPercent("wlan0")
 	icon := "󰤮"
 	switch {
 	case signal >= 90:
-		icon = signalIcon["90"]
+		icon = "󰤨"
 	case signal >= 75:
-		icon = signalIcon["75"]
+		icon = "󰤥"
 	case signal >= 50:
-		icon = signalIcon["50"]
+		icon = "󰤢"
 	case signal >= 25:
-		icon = signalIcon["25"]
+		icon = "󰤟"
 	case signal >= 5:
-		icon = signalIcon["5"]
+		icon = "󰤯"
 	default:
-		icon = signalIcon["0"]
+		icon = "󰤮"
 	}
 	return fmt.Sprintf("%s ", icon)
 }
@@ -52,20 +42,34 @@ func GetNetState(iface string) (string, error) {
 	return strings.TrimSpace(string(data)), nil
 }
 
-func GetActiveWifi() (ssid string, signal float64) {
-	stdout, _, err := utils.RunScript("bash", "nmcli -t -f ACTIVE,SSID,SIGNAL device wifi")
+func GetWirelessSignalPercent(iface string) (float64, error) {
+	out, err := exec.Command("nmcli", "-t", "-f", "IN-USE,SIGNAL", "dev", "wifi", "list", "ifname", iface, "--rescan", "no").CombinedOutput()
 	if err != nil {
-		return "", 0.0
+		return 0, err
 	}
-	lines := strings.Split(string(stdout), "\n")
-	for _, line := range lines {
-		fields := strings.Split(line, ":")
-		if len(fields) == 3 && (fields[0] == "yes" || fields[0] == "是") {
-			ssid = fields[1]
-			signalInt64, _ := strconv.Atoi(fields[2])
-			signal := float64(signalInt64)
-			return ssid, signal
+
+	for _, line := range strings.Split(string(out), "\n") {
+		line = strings.TrimSpace(line)
+		if line == "" {
+			continue
 		}
+		// Expected format: "*:57" for the currently used AP.
+		if !strings.HasPrefix(line, "*:") {
+			continue
+		}
+		vStr := strings.TrimPrefix(line, "*:")
+		v, err := strconv.ParseFloat(vStr, 64)
+		if err != nil {
+			return 0, err
+		}
+		if v < 0 {
+			v = 0
+		}
+		if v > 100 {
+			v = 100
+		}
+		return v, nil
 	}
-	return "", 0.0
+
+	return 0, fmt.Errorf("nmcli: active wifi not found")
 }

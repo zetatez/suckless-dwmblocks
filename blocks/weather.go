@@ -1,18 +1,17 @@
 package blocks
 
 import (
+	"bytes"
 	"io"
 	"net/http"
 	"time"
 )
 
-func BlockWeather() string {
-	client := &http.Client{
-		Timeout: 5 * time.Second,
-	}
+var weatherClient = &http.Client{Timeout: 5 * time.Second}
 
+func BlockWeather() string {
 	// %c = 天气符号, %t = 温度
-	resp, err := client.Get("https://wttr.in/?format=%c%t")
+	resp, err := weatherClient.Get("https://wttr.in/?format=%c%t")
 	if err != nil {
 		return "N--"
 	}
@@ -23,5 +22,5 @@ func BlockWeather() string {
 		return "--"
 	}
 
-	return string(body)
+	return string(bytes.TrimSpace(body))
 }

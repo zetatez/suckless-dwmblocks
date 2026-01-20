@@ -1,14 +1,13 @@
 # suckless-dwmblocks
 
 A lightweight [dwm](https://dwm.suckless.org/) status bar updater written in **Go**.
-It updates the status bar at fixed intervals or on demand via Unix signals.
+It updates the status bar at fixed intervals.
 
-## ✨ Features
+## Features
 
-* 🕒 **Interval updates**: update each block at a configurable time interval
-* 📡 **Signal updates**: refresh specific blocks instantly via signals
-* 🧩 **Modular design**: each block can have its own interval, signal, icon, and command/function
-* ⚡ **Lightweight & fast**: pure Go implementation with minimal dependencies
+* Interval updates per block
+* Modular block functions
+* Writes to dwm status via X11 (fallback to xsetroot)
 
 ## 📦 Installation
 
@@ -23,9 +22,6 @@ make install
 1. Define your blocks in `./config.go`:
 
    * `Interval`: update frequency
-   * `Signal`: signal ID to trigger manual updates
-   * `Icon`: prefix icon/string for the block
-   * `Command`: shell command to run (optional)
    * `Func`: Go function callback (optional)
 
 2. Run it in the background:
@@ -34,16 +30,9 @@ make install
    ./dwmblocks &
    ```
 
-3. Trigger a block update via signal:
-
-   ```bash
-   kill -10 $(pidof dwmblocks)   # refresh block with signal ID = 10
-   ```
-
 ## ⚙️ How it works
 
-* Each block is updated either by interval or signal
+* Each block is updated by interval
 * Results are concatenated with a delimiter
 * The final string is written to the X root window via `xsetroot -name`
 * `dwm` displays it in the status bar
-

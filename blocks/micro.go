@@ -1,11 +1,19 @@
 package blocks
 
 import (
-	"dwmblocks/utils"
 	"fmt"
+	"os/exec"
 	"regexp"
 	"strconv"
 	"strings"
+)
+
+var (
+	microIcons = map[string]string{
+		"on":  "",
+		"off": "",
+	}
+	microPercentRe = regexp.MustCompile(`\[(\d+)%\]`)
 )
 
 func BlockMicro() string {
@@ -13,32 +21,34 @@ func BlockMicro() string {
 	if err != nil {
 		return ""
 	}
-	statusIcons := map[string]string{
-		"on":  "",
-		"off": "",
-	}
-	return fmt.Sprintf("%s %02.0f", statusIcons[status], pct)
+	return fmt.Sprintf("%s %02.0f", microIcons[status], pct)
 }
 
 func GetMicro() (status string, percent float64, err error) {
-	stdout, _, err := utils.RunScript("sh", "amixer get Capture")
+	stdout, err := exec.Command("amixer", "get", "Capture").CombinedOutput()
 	if err != nil {
 		return "", 0, err
 	}
+	out := string(stdout)
 	status = "on"
-	if strings.Contains(string(stdout), "[off]") {
+	if strings.Contains(out, "[off]") {
 		status = "off"
 	}
-	r := regexp.MustCompile(`\[(?P<percent>\d+)%\]`)
-	xs := r.FindAllStringSubmatch(string(stdout), -1)
+	xs := microPercentRe.FindAllStringSubmatch(out, -1)
 	if len(xs) == 0 {
 		return status, 0, fmt.Errorf("get micro failed")
 	}
 	sum, cnt := 0.0, 0.0
 	for _, x := range xs {
-		p, _ := strconv.ParseFloat(x[1], 64)
+		p, err := strconv.ParseFloat(x[1], 64)
+		if err != nil {
+			continue
+		}
 		sum += p
 		cnt++
+	}
+	if cnt == 0 {
+		return status, 0, fmt.Errorf("get micro failed")
 	}
 	percent = sum / cnt
 	return status, percent, nil

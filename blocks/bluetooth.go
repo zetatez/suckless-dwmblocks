@@ -4,6 +4,13 @@ import (
 	"fmt"
 	"github.com/godbus/dbus/v5"
 	"strings"
+	"sync"
+)
+
+var (
+	bluezOnce sync.Once
+	bluezConn *dbus.Conn
+	bluezErr  error
 )
 
 func BlockBluetoothConnectedDevices() string {
@@ -14,12 +21,15 @@ func BlockBluetoothConnectedDevices() string {
 	if len(connectedDevices) == 0 {
 		return ""
 	}
-	str := " "
-	delimiter := "|"
-	for _, device := range connectedDevices {
-		str += fmt.Sprintf("%s%s", device.Name, delimiter)
+	var sb strings.Builder
+	sb.WriteString(" ")
+	for i, device := range connectedDevices {
+		if i > 0 {
+			sb.WriteByte('|')
+		}
+		sb.WriteString(device.Name)
 	}
-	return strings.TrimSuffix(str, delimiter)
+	return sb.String()
 }
 
 type Device struct {
@@ -28,15 +38,16 @@ type Device struct {
 }
 
 func GetBlueToothConnectedDevices() ([]Device, error) {
-	conn, err := dbus.SystemBus()
-	if err != nil {
-		return nil, fmt.Errorf("failed to connect to system bus: %v", err)
+	bluezOnce.Do(func() {
+		bluezConn, bluezErr = dbus.SystemBus()
+	})
+	if bluezErr != nil {
+		return nil, fmt.Errorf("failed to connect to system bus: %v", bluezErr)
 	}
 	// get all objects managed by BlueZ
-	manager := conn.Object("org.bluez", "/")
+	manager := bluezConn.Object("org.bluez", "/")
 	var objs map[dbus.ObjectPath]map[string]map[string]dbus.Variant
-	err = manager.Call("org.freedesktop.DBus.ObjectManager.GetManagedObjects", 0).Store(&objs)
-	if err != nil {
+	if err := manager.Call("org.freedesktop.DBus.ObjectManager.GetManagedObjects", 0).Store(&objs); err != nil {
 		return nil, fmt.Errorf("failed to get managed objects: %v", err)
 	}
 	connectedDevices := make([]Device, 0)

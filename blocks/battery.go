@@ -1,7 +1,6 @@
 package blocks
 
 import (
-	"dwmblocks/utils"
 	"fmt"
 	"os"
 	"path"
@@ -38,7 +37,6 @@ func formatBattery(capacity float64, status string) string {
 	case status == "Charging":
 		return fmt.Sprintf("%s %02.0f", statusIcons[status], capacity)
 	case capacity <= CriticalBattery:
-		utils.Notify(fmt.Sprintf("Critical battery! %02.0f remaining", capacity))
 		return fmt.Sprintf("%s %02.0f", statusIcons["Warning"], capacity)
 	case capacity < LowBatteryWarn:
 		return fmt.Sprintf("%s %02.0f", statusIcons["Warning"], capacity)

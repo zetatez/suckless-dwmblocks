@@ -7,27 +7,27 @@ import (
 	"github.com/shirou/gopsutil/process"
 )
 
-func BlockProcs() string {
-	concernedProcsIcon := map[string]string{
-		"flameshot":           "",
-		"vim":                 "",
-		"subl":                "",
-		"ffmpeg":              "",
-		"inkscape":            "",
-		"krita":               "",
-		"ncmpcpp":             "󰝚",
-		"netease-cloud-music": "󰝚",
-		"obsidian":            "󱓩",
-		"wechat-uos":          "󰘑",
-		"wemeet":              "󱋒",
-		"zoom":                "󱐒",
-		"xournalpp":           "󰽉",
-		"zathura":             "",
-		"dockerd":             "",
-		"chrome":              "󰊭",
-		"clash":               "🌐",
-	}
+var concernedProcsIcon = map[string]string{
+	"flameshot":           "",
+	"vim":                 "",
+	"subl":                "",
+	"ffmpeg":              "",
+	"inkscape":            "",
+	"krita":               "",
+	"ncmpcpp":             "󰝚",
+	"netease-cloud-music": "󰝚",
+	"obsidian":            "󱓩",
+	"wechat-uos":          "󰘑",
+	"wemeet":              "󱋒",
+	"zoom":                "󱐒",
+	"xournalpp":           "󰽉",
+	"zathura":             "",
+	"dockerd":             "",
+	"chrome":              "󰊭",
+	"clash":               "🌐",
+}
 
+func BlockProcs() string {
 	procs, err := process.Processes()
 	if err != nil {
 		return "?"
@@ -40,14 +40,10 @@ func BlockProcs() string {
 		if err != nil {
 			continue
 		}
-		cmdline, err := p.Cmdline()
-		if err != nil {
-			cmdline = ""
-		}
-
-		for proc := range concernedProcsIcon {
-			if name == proc || strings.Contains(cmdline, proc) {
-				running[proc] = struct{}{}
+		if _, ok := concernedProcsIcon[name]; ok {
+			running[name] = struct{}{}
+			if len(running) == len(concernedProcsIcon) {
+				break
 			}
 		}
 	}

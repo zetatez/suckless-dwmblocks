@@ -2,7 +2,16 @@ package blocks
 
 import (
 	"fmt"
+	"sync"
+
 	"github.com/godbus/dbus/v5"
+)
+
+var (
+	fcitxOnce sync.Once
+	fcitxConn *dbus.Conn
+	fcitxObj  dbus.BusObject
+	fcitxErr  error
 )
 
 func BlockInputMethod() string {
@@ -10,25 +19,28 @@ func BlockInputMethod() string {
 	if err != nil {
 		return " ?"
 	}
-	return fmt.Sprintf(" %s", inputMethod)
+	return fmt.Sprintf("  %s", inputMethod)
 }
 
 func GetInputMethod() (string, error) {
-	conn, err := dbus.ConnectSessionBus()
-	if err != nil {
-		return "", err
+	fcitxOnce.Do(func() {
+		fcitxConn, fcitxErr = dbus.ConnectSessionBus()
+		if fcitxErr == nil {
+			fcitxObj = fcitxConn.Object("org.fcitx.Fcitx5", "/controller")
+		}
+	})
+	if fcitxErr != nil {
+		return "", fcitxErr
 	}
-	defer conn.Close()
-	obj := conn.Object("org.fcitx.Fcitx5", "/controller")
 	var inputMethod string
-	if err = obj.Call("org.fcitx.Fcitx.Controller1.CurrentInputMethod", 0).Store(&inputMethod); err != nil {
+	if err := fcitxObj.Call("org.fcitx.Fcitx.Controller1.CurrentInputMethod", 0).Store(&inputMethod); err != nil {
 		return "", err
 	}
 	switch inputMethod {
 	case "pinyin":
-		return "CH", nil
+		return "中文", nil
 	case "keyboard-us":
-		return "EN", nil
+		return "英文", nil
 	default:
 		return inputMethod, nil
 	}

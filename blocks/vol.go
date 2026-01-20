@@ -1,11 +1,19 @@
 package blocks
 
 import (
-	"dwmblocks/utils"
 	"fmt"
+	"os/exec"
 	"regexp"
 	"strconv"
 	"strings"
+)
+
+var (
+	volIcons = map[string]string{
+		"on":  "🎧",
+		"off": "󰟎",
+	}
+	volPercentRe = regexp.MustCompile(`\[(\d+)%\]`)
 )
 
 func BlockVol() string {
@@ -13,32 +21,34 @@ func BlockVol() string {
 	if err != nil {
 		return "?"
 	}
-	statusIcons := map[string]string{
-		"on":  "🎧",
-		"off": "󰟎",
-	}
-	return fmt.Sprintf("%s %02.0f", statusIcons[status], pct)
+	return fmt.Sprintf("%s %02.0f", volIcons[status], pct)
 }
 
 func GetVolume() (status string, percent float64, err error) {
-	stdout, _, err := utils.RunScript("sh", "amixer get Master")
+	stdout, err := exec.Command("amixer", "get", "Master").CombinedOutput()
 	if err != nil {
 		return "", 0.0, err
 	}
+	out := string(stdout)
 	status = "on"
-	if strings.Contains(string(stdout), "[off]") {
+	if strings.Contains(out, "[off]") {
 		status = "off"
 	}
-	r := regexp.MustCompile(`\[(?P<percent>\d+)%\]`)
-	xs := r.FindAllStringSubmatch(string(stdout), -1)
+	xs := volPercentRe.FindAllStringSubmatch(out, -1)
 	if len(xs) == 0 {
 		return status, 0.0, fmt.Errorf("get volume failed")
 	}
 	sum, cnt := 0.0, 0.0
 	for _, x := range xs {
-		p, _ := strconv.ParseFloat(x[1], 64)
+		p, err := strconv.ParseFloat(x[1], 64)
+		if err != nil {
+			continue
+		}
 		sum += p
 		cnt++
+	}
+	if cnt == 0 {
+		return status, 0.0, fmt.Errorf("get volume failed")
 	}
 	percent = sum / cnt
 	return status, percent, nil

@@ -1,24 +1,18 @@
 package main
 
 import (
-	"bytes"
 	"context"
 	"fmt"
-	"os"
 	"os/exec"
 	"os/signal"
-	"runtime"
 	"strings"
-	"sync"
 	"syscall"
 	"time"
 )
 
 type Block struct {
-	Signal   uint
 	Interval time.Duration
 	Func     func() string
-	Command  string
 
 	nextRun time.Time
 }
@@ -28,14 +22,8 @@ var (
 	lastStatus string
 )
 
-var (
-	SIGPLUS  syscall.Signal
-	SIGMINUS syscall.Signal
-)
-
 func init() {
 	initBlocks()
-	initSignals()
 }
 
 func initBlocks() {
@@ -47,49 +35,33 @@ func initBlocks() {
 	}
 }
 
-func initSignals() {
-	switch runtime.GOOS {
-	case "openbsd":
-		SIGPLUS = syscall.Signal(int(syscall.SIGUSR1) + 1)
-		SIGMINUS = syscall.Signal(int(syscall.SIGUSR1) - 1)
-	case "linux":
-		const defaultSIGRTMIN = 34
-		SIGPLUS = syscall.Signal(defaultSIGRTMIN)
-		SIGMINUS = syscall.Signal(defaultSIGRTMIN + 1)
-	default:
-		SIGPLUS = syscall.SIGUSR1
-		SIGMINUS = syscall.SIGUSR2
-	}
-}
-
 func main() {
 	statusbar = make([]string, len(Blocks))
-
-	sigCh := make(chan os.Signal, 10)
-	SetupSignalNotifications(sigCh)
+	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGTERM, syscall.SIGINT)
+	defer stop()
 
 	RunOnceAllBlocks()
 	UpdateStatus()
 
+	timer := time.NewTimer(0)
+	defer timer.Stop()
+
 	for {
 		next := NextWakeUpDuration()
+		if !timer.Stop() {
+			select {
+			case <-timer.C:
+			default:
+			}
+		}
+		timer.Reset(next)
+
 		select {
-		case <-time.After(next):
+		case <-timer.C:
 			RunDueBlocks()
 			UpdateStatus()
-		case s := <-sigCh:
-			switch s {
-			case syscall.SIGTERM, syscall.SIGINT:
-				return
-			default:
-				if sig, ok := s.(syscall.Signal); ok {
-					idx, ok := BlockIdxFromSignal(sig)
-					if ok {
-						GetSigCmds(uint(idx))
-						UpdateStatus()
-					}
-				}
-			}
+		case <-ctx.Done():
+			return
 		}
 	}
 }
@@ -116,36 +88,6 @@ func NextWakeUpDuration() time.Duration {
 	return next
 }
 
-func BlockIdxFromSignal(sig syscall.Signal) (int, bool) {
-	if sig >= SIGPLUS {
-		return int(sig - SIGPLUS), true
-	}
-	if sig >= SIGMINUS {
-		return int(sig - SIGMINUS), true
-	}
-	return 0, false
-}
-
-func SetupSignalNotifications(sigc chan os.Signal) {
-	signal.Notify(sigc, syscall.SIGTERM, syscall.SIGINT)
-	for _, b := range Blocks {
-		if b.Signal > 0 {
-			signal.Notify(sigc, syscall.Signal(int(SIGMINUS)+int(b.Signal)))
-		}
-	}
-}
-
-func RunCmd(cmd string, timeout time.Duration) (string, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
-	defer cancel()
-	c := exec.CommandContext(ctx, "sh", "-c", cmd)
-	var out bytes.Buffer
-	c.Stdout = &out
-	c.Stderr = &out
-	err := c.Run()
-	return strings.TrimSpace(out.String()), err
-}
-
 func GetCmd(b Block) string {
 	defer func() {
 		if r := recover(); r != nil {
@@ -155,49 +97,22 @@ func GetCmd(b Block) string {
 	if b.Func != nil {
 		return b.Func()
 	}
-	if b.Command != "" {
-		out, err := RunCmd(b.Command, time.Second)
-		if err == nil {
-			return out
-		}
-	}
 	return ""
 }
 
 func RunOnceAllBlocks() {
-	var wg sync.WaitGroup
 	for i := range Blocks {
-		b := &Blocks[i]
-		wg.Add(1)
-		go func(i int, b *Block) {
-			defer wg.Done()
-			statusbar[i] = GetCmd(*b)
-		}(i, b)
+		statusbar[i] = GetCmd(Blocks[i])
 	}
-	wg.Wait()
 }
 
 func RunDueBlocks() {
 	now := time.Now()
-	var wg sync.WaitGroup
 	for i := range Blocks {
 		b := &Blocks[i]
 		if b.Interval > 0 && !now.Before(b.nextRun) {
-			wg.Add(1)
-			go func(i int, b *Block) {
-				defer wg.Done()
-				statusbar[i] = GetCmd(*b)
-				b.nextRun = now.Add(b.Interval)
-			}(i, b)
-		}
-	}
-	wg.Wait()
-}
-
-func GetSigCmds(sig uint) {
-	for i, b := range Blocks {
-		if b.Signal == sig {
-			statusbar[i] = GetCmd(b)
+			statusbar[i] = GetCmd(*b)
+			b.nextRun = now.Add(b.Interval)
 		}
 	}
 }
@@ -225,8 +140,10 @@ func UpdateStatus() {
 	}
 }
 
-func write(s string) error {
-	_, cancel := context.WithTimeout(context.Background(), 500*time.Millisecond)
-	defer cancel()
-	return exec.Command("xsetroot", "-name", s).Run()
+func Notify(msg ...any) {
+	msgStr := strings.TrimSpace(fmt.Sprint(msg...))
+	if msgStr == "" {
+		return
+	}
+	exec.Command("notify-send", msgStr).Run()
 }

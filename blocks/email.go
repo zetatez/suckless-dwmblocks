@@ -10,17 +10,21 @@ import (
 
 const EmailPath = ".mail/inbox"
 
-func BlockEmail() string {
-	icons := map[string]string{
+var (
+	emailIcons = map[string]string{
 		"new-email": "󱃚",
 		"empty":     "󰇯",
 	}
+	emailRe = regexp.MustCompile("From: (?P<from>.*)\nMime-Version: .*\nDate: (?P<date>.*)\nSubject: (?P<subject>.*)\n")
+)
+
+func BlockEmail() string {
 	emails, err := GetEmail(EmailPath)
 	if err != nil {
 		return "?"
 	}
 	if len(emails) == 0 {
-		return icons["empty"]
+		return emailIcons["empty"]
 	}
 	var sb strings.Builder
 	for _, email := range emails {
@@ -29,7 +33,7 @@ func BlockEmail() string {
 	if err := os.WriteFile(MsgPath, []byte(sb.String()), 0o644); err != nil {
 		fmt.Println(err)
 	}
-	return fmt.Sprintf("%s: %d", icons["new-email"], len(emails))
+	return fmt.Sprintf("%s: %d", emailIcons["new-email"], len(emails))
 }
 
 type Email struct {
@@ -44,8 +48,7 @@ func GetEmail(emailPath string) (emails []Email, err error) {
 		return emails, err
 	}
 	msg := string(msgByte)
-	r := regexp.MustCompile("From: (?P<from>.*)\nMime-Version: .*\nDate: (?P<date>.*)\nSubject: (?P<subject>.*)\n")
-	xs := r.FindAllStringSubmatch(msg, -1)
+	xs := emailRe.FindAllStringSubmatch(msg, -1)
 	for _, x := range xs {
 		if len(x) != 4 {
 			continue
