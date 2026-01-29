@@ -1,0 +1,14 @@
+[Unit]
+Description=dwmblocks status bar
+Documentation=https://github.com/zetatez/dwmblocks
+After=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/dwmblocks
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=graphical-session.target

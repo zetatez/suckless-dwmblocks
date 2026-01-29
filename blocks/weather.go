@@ -13,13 +13,13 @@ func BlockWeather() string {
 	// %c = 天气符号, %t = 温度
 	resp, err := weatherClient.Get("https://wttr.in/?format=%c%t")
 	if err != nil {
-		return "N--"
+		return "W--"
 	}
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return "--"
+		return "W--"
 	}
 
 	return string(bytes.TrimSpace(body))

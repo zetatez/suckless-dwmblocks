@@ -1,28 +1,31 @@
 BINARY = dwmblocks
-SRC = .
-PREFIX = /usr/local
+PREFIX = /usr/local/bin
 
 .PHONY: all build run clean install uninstall
 
 all: build
 
 build:
-	@echo "==> Building $(BINARY)..."
-	@go build -o $(BINARY) $(SRC)
+	go build -ldflags="-s -w" -o $(BINARY) .
 
 run:
-	@echo "==> Running $(SRC)..."
-	@go run $(SRC)
+	go run .
 
 clean:
-	@echo "==> Cleaning..."
-	@rm -f $(BINARY)
+	rm -f $(BINARY)
+
+SERVICE_DIR = $(or $(XDG_CONFIG_HOME),$(HOME)/.config)/systemd/user
 
 install: build
-	@echo "==> Installing to $(PREFIX)/bin"
-	@sudo mkdir -p $(PREFIX)/bin
-	@sudo cp -f $(BINARY) $(PREFIX)/bin/
+	sudo install -d $(PREFIX)
+	sudo install -m 755 $(BINARY) $(PREFIX)/
+	install -d $(SERVICE_DIR)
+	install -m 644 dwmblocks.service $(SERVICE_DIR)/
+	systemctl --user daemon-reload
+	systemctl --user disable --now dwmblocks.service 2>/dev/null || true
+	systemctl --user enable --now dwmblocks.service
 
 uninstall:
-	@echo "==> Removing $(PREFIX)/bin/$(BINARY)"
-	@sudo rm -f $(PREFIX)/bin/$(BINARY)
+	sudo rm -f $(PREFIX)/$(BINARY)
+	rm -f $(SERVICE_DIR)/dwmblocks.service
+	systemctl --user daemon-reload

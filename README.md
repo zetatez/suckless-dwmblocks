@@ -11,10 +11,18 @@ It updates the status bar at fixed intervals.
 
 ## 📦 Installation
 
+### One-liner
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/zetatez/suckless-dwmblocks/main/install.sh | sh
+```
+
+### From source
+
 ```bash
 git clone https://github.com/zetatez/suckless-dwmblocks.git
 cd suckless-dwmblocks
-make install
+sudo make install
 ```
 
 ## 🚀 Usage

@@ -79,7 +79,6 @@ func (w *x11Writer) writeStatus(s string) error {
 	if err := xproto.ChangePropertyChecked(w.conn, xproto.PropModeReplace, w.root, w.atomNetWM, w.atomUTF8, 8, uint32(len(bs)), bs).Check(); err != nil {
 		return err
 	}
-	w.conn.Sync()
 	return nil
 }
 

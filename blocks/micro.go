@@ -19,9 +19,9 @@ var (
 func BlockMicro() string {
 	status, pct, err := GetMicro()
 	if err != nil {
-		return ""
+		return "M--"
 	}
-	return fmt.Sprintf("%s %02.0f", microIcons[status], pct)
+	return fmt.Sprintf("%s%02.0f", microIcons[status], pct)
 }
 
 func GetMicro() (status string, percent float64, err error) {

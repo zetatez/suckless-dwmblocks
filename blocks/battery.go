@@ -9,24 +9,24 @@ import (
 )
 
 const (
-	BatteryPath     = "/sys/class/power_supply/BAT0"
 	LowBatteryWarn  = 25
 	CriticalBattery = 10
 )
 
 var statusIcons = map[string]string{
-	"Full":         "󰂅",
+	"Full":         "󱊣",
 	"Discharging":  "",
-	"Charging":     "",
-	"Not charging": "󰢟",
-	"Unknown":      "󰂑",
+	"Charging":     "󱐋",
+	"Not charging": "",
+	"Unknown":      "",
 	"Warning":      "",
 }
 
 func BlockBattery() string {
-	capacity, status, err := GetBattery(BatteryPath)
+	cfg := getConfig()
+	capacity, status, err := GetBattery(cfg.BatteryPath)
 	if err != nil {
-		return ""
+		return "B--"
 	}
 
 	return formatBattery(capacity, status)
@@ -35,19 +35,19 @@ func BlockBattery() string {
 func formatBattery(capacity float64, status string) string {
 	switch {
 	case status == "Charging":
-		return fmt.Sprintf("%s %02.0f", statusIcons[status], capacity)
+		return fmt.Sprintf("%s%02.0f", statusIcons[status], capacity)
 	case capacity <= CriticalBattery:
-		return fmt.Sprintf("%s %02.0f", statusIcons["Warning"], capacity)
+		return fmt.Sprintf("%s%02.0f", statusIcons["Warning"], capacity)
 	case capacity < LowBatteryWarn:
-		return fmt.Sprintf("%s %02.0f", statusIcons["Warning"], capacity)
+		return fmt.Sprintf("%s%02.0f", statusIcons["Warning"], capacity)
 	case capacity == 100:
-		return fmt.Sprintf("%s %02.0f", statusIcons["Full"], capacity)
+		return fmt.Sprintf("%s%02.0f", statusIcons["Full"], capacity)
 	default:
 		icon, ok := statusIcons[status]
 		if !ok {
 			icon = statusIcons["Unknown"]
 		}
-		return fmt.Sprintf("%s %02.0f", icon, capacity)
+		return fmt.Sprintf("%s%02.0f", icon, capacity)
 	}
 }
 

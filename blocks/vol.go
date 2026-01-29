@@ -10,7 +10,7 @@ import (
 
 var (
 	volIcons = map[string]string{
-		"on":  "🎧",
+		"on":  "󰋋",
 		"off": "󰟎",
 	}
 	volPercentRe = regexp.MustCompile(`\[(\d+)%\]`)
@@ -19,9 +19,9 @@ var (
 func BlockVol() string {
 	status, pct, err := GetVolume()
 	if err != nil {
-		return "?"
+		return "V--"
 	}
-	return fmt.Sprintf("%s %02.0f", volIcons[status], pct)
+	return fmt.Sprintf("%s%02.0f", volIcons[status], pct)
 }
 
 func GetVolume() (status string, percent float64, err error) {

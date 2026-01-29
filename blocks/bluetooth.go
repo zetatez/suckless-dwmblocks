@@ -2,9 +2,10 @@ package blocks
 
 import (
 	"fmt"
-	"github.com/godbus/dbus/v5"
 	"strings"
 	"sync"
+
+	"github.com/godbus/dbus/v5"
 )
 
 var (
@@ -16,13 +17,13 @@ var (
 func BlockBluetoothConnectedDevices() string {
 	connectedDevices, err := GetBlueToothConnectedDevices()
 	if err != nil {
-		return " ?"
+		return "--"
 	}
 	if len(connectedDevices) == 0 {
 		return ""
 	}
 	var sb strings.Builder
-	sb.WriteString(" ")
+	sb.WriteString("")
 	for i, device := range connectedDevices {
 		if i > 0 {
 			sb.WriteByte('|')
