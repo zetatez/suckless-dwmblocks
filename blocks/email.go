@@ -4,63 +4,38 @@ import (
 	"fmt"
 	"os"
 	"path"
-	"regexp"
-	"strings"
 )
 
-const EmailPath = ".mail/inbox"
+const EmailDir = ".mail/inbox"
 
-var (
-	emailIcons = map[string]string{
-		"new-email": "󱃚",
-		"empty":     "󰇯",
-	}
-	emailRe = regexp.MustCompile("From: (?P<from>.*)\nMime-Version: .*\nDate: (?P<date>.*)\nSubject: (?P<subject>.*)\n")
-)
+var emailIcons = map[string]string{
+	"new-email": "󱃚",
+	"empty":     "󰇯",
+}
 
 func BlockEmail() string {
-	emails, err := GetEmail(EmailPath)
+	count, err := CountMaildirNew(EmailDir)
 	if err != nil {
 		return "?"
 	}
-	if len(emails) == 0 {
+	if count == 0 {
 		return emailIcons["empty"]
 	}
-	var sb strings.Builder
-	for _, email := range emails {
-		sb.WriteString(fmt.Sprintf("Sub: %s; Fro: %s.\n", email.Subject, email.From))
-	}
-	if err := os.WriteFile(MsgPath, []byte(sb.String()), 0o644); err != nil {
-		fmt.Println(err)
-	}
-	return fmt.Sprintf("%s: %d", emailIcons["new-email"], len(emails))
+	return fmt.Sprintf("%s %d", emailIcons["new-email"], count)
 }
 
-type Email struct {
-	From    string
-	Date    string
-	Subject string
-}
-
-func GetEmail(emailPath string) (emails []Email, err error) {
-	msgByte, err := os.ReadFile(path.Join(os.Getenv("HOME"), emailPath))
+func CountMaildirNew(maildir string) (int, error) {
+	newPath := path.Join(os.Getenv("HOME"), maildir, "new")
+	entries, err := os.ReadDir(newPath)
 	if err != nil {
-		return emails, err
+		return 0, err
 	}
-	msg := string(msgByte)
-	xs := emailRe.FindAllStringSubmatch(msg, -1)
-	for _, x := range xs {
-		if len(x) != 4 {
+	count := 0
+	for _, entry := range entries {
+		if entry.IsDir() {
 			continue
 		}
-		emails = append(
-			emails,
-			Email{
-				From:    x[1],
-				Date:    x[2],
-				Subject: x[3],
-			},
-		)
+		count++
 	}
-	return emails, nil
+	return count, nil
 }
