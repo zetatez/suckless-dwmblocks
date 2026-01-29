@@ -1,6 +1,8 @@
 package blocks
 
 import (
+	"fmt"
+
 	"github.com/shirou/gopsutil/cpu"
 )
 
@@ -9,8 +11,7 @@ func BlockCPU() string {
 	if err != nil {
 		return "CPU: ?"
 	}
-	// return fmt.Sprintf("%s %02.0f", GetIconByPct(pct), pct)
-	return GetIconByPct(pct)
+	return fmt.Sprintf("%s", GetIconByPct(pct))
 }
 
 func GetCpuPercent() (float64, error) {

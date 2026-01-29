@@ -13,8 +13,7 @@ import (
 type Block struct {
 	Interval time.Duration
 	Func     func() string
-
-	nextRun time.Time
+	nextRun  time.Time
 }
 
 var (

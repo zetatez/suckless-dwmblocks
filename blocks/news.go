@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	NewsFeedURL        = "https://feeds.a.dj.com/rss/RSSWorldNews.xml"
+	NewsFeedURL        = "https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
 	NewsFetchInterval  = 30 * time.Minute
 	NewsMaxItems       = 8
 	NewsScrollWidth    = 52
@@ -52,7 +52,7 @@ func BlockNews() string {
 	}
 
 	if len(newsRunes) == 0 {
-		return "NEWS --"
+		return "News --"
 	}
 
 	if len(newsRunes) <= NewsScrollWidth {
@@ -87,7 +87,7 @@ func fetchNewsLocked() error {
 		return nil
 	}
 
-	newsText = strings.Join(items, " !! ")
+	newsText = strings.Join(items, " | ")
 	newsRunes = []rune(newsText)
 	newsScroll = append([]rune{}, newsRunes...)
 	newsScroll = append(newsScroll, ' ', ' ', ' ', ' ', ' ')

@@ -10,7 +10,7 @@ import (
 
 var (
 	volIcons = map[string]string{
-		"on":  "🎧",
+		"on":  "󰋋",
 		"off": "󰟎",
 	}
 	volPercentRe = regexp.MustCompile(`\[(\d+)%\]`)

@@ -30,7 +30,7 @@ func BlockNet() string {
 	default:
 		icon = "󰤮"
 	}
-	return fmt.Sprintf("%s ", icon)
+	return fmt.Sprintf("%s", icon)
 }
 
 func GetNetState(iface string) (string, error) {
