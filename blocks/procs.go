@@ -10,20 +10,19 @@ import (
 var concernedProcsIcon = map[string]string{
 	"flameshot":           "",
 	"vim":                 "",
+	"nvim":                "",
 	"subl":                "",
 	"ffmpeg":              "",
 	"inkscape":            "",
 	"krita":               "",
-	"ncmpcpp":             "󰝚",
 	"netease-cloud-music": "󰝚",
 	"obsidian":            "󱓩",
-	"wechat-uos":          "󰘑",
-	"wemeet":              "󱋒",
 	"zoom":                "󱐒",
 	"xournalpp":           "󰽉",
 	"zathura":             "",
 	"dockerd":             "",
-	"chrome":              "󰊭",
+	"chrome":              "󰊯",
+	"qutebrowser":         "",
 	"clash":               "🌐",
 }
 

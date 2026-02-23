@@ -10,9 +10,9 @@ import (
 func BlockCPUTemp() string {
 	temp, err := GetCpuMaxTemp()
 	if err != nil || temp == 0 {
-		return "--󰔄"
+		return "󰍛 --󰔄"
 	}
-	return fmt.Sprintf("%02.0f󰔄", temp)
+	return fmt.Sprintf("󰍛 %02.0f󰔄", temp)
 }
 
 func GetCpuMaxTemp() (maxTemp float64, err error) {

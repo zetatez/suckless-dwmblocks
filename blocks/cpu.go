@@ -9,9 +9,9 @@ import (
 func BlockCPU() string {
 	pct, err := GetCpuPercent()
 	if err != nil {
-		return "CPU: ?"
+		return "󰍛 --"
 	}
-	return fmt.Sprintf("%s", GetIconByPct(pct))
+	return fmt.Sprintf("󰍛 %02.0f", pct)
 }
 
 func GetCpuPercent() (float64, error) {

@@ -11,7 +11,7 @@ func BlockMem() string {
 	if err != nil {
 		return "󰍛 --"
 	}
-	return fmt.Sprintf("%s", GetIconByPct(pct))
+	return fmt.Sprintf("󰍛 %02.0f", pct)
 }
 
 func GetMemPercent() (float64, error) {
