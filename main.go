@@ -67,24 +67,25 @@ func main() {
 
 func NextWakeUpDuration() time.Duration {
 	now := time.Now()
-	next := time.Duration(1 << 62)
-	for _, b := range Blocks {
+	minDur := time.Duration(1 << 62)
+	for i := range Blocks {
+		b := &Blocks[i]
 		if b.Interval <= 0 {
 			continue
 		}
-		if b.nextRun.After(now) {
+		if now.Before(b.nextRun) {
 			d := b.nextRun.Sub(now)
-			if d < next {
-				next = d
+			if d < minDur {
+				minDur = d
 			}
 		} else {
 			return 0
 		}
 	}
-	if next == time.Duration(1<<62) {
+	if minDur == time.Duration(1<<62) {
 		return time.Second
 	}
-	return next
+	return minDur
 }
 
 func GetCmd(b Block) string {

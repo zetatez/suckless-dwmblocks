@@ -1,6 +1,8 @@
 package blocks
 
 import (
+	"fmt"
+	"os"
 	"sort"
 	"strings"
 
@@ -27,16 +29,15 @@ var concernedProcsIcon = map[string]string{
 }
 
 func BlockProcs() string {
-	procs, err := process.Processes()
+	pids, err := process.Pids()
 	if err != nil {
 		return "?"
 	}
 
 	running := make(map[string]struct{})
-
-	for _, p := range procs {
-		name, err := p.Name()
-		if err != nil {
+	for _, pid := range pids {
+		name := getProcName(pid)
+		if name == "" {
 			continue
 		}
 		if _, ok := concernedProcsIcon[name]; ok {
@@ -54,4 +55,12 @@ func BlockProcs() string {
 	sort.Strings(icons)
 
 	return "< " + strings.Join(icons, " ") + " >"
+}
+
+func getProcName(pid int32) string {
+	data, err := os.ReadFile(fmt.Sprintf("/proc/%d/comm", pid))
+	if err != nil {
+		return ""
+	}
+	return strings.TrimSpace(string(data))
 }

@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"strings"
 )
-
-const EmailDir = ".mail/inbox"
 
 var emailIcons = map[string]string{
 	"new-email": "󱃚",
@@ -14,7 +13,8 @@ var emailIcons = map[string]string{
 }
 
 func BlockEmail() string {
-	count, err := CountMaildirNew(EmailDir)
+	cfg := getConfig()
+	count, err := CountMaildirNew(cfg.EmailDir)
 	if err != nil {
 		return "?"
 	}
@@ -25,7 +25,8 @@ func BlockEmail() string {
 }
 
 func CountMaildirNew(maildir string) (int, error) {
-	newPath := path.Join(os.Getenv("HOME"), maildir, "new")
+	maildir = expandHome(maildir)
+	newPath := path.Join(maildir, "new")
 	entries, err := os.ReadDir(newPath)
 	if err != nil {
 		return 0, err
@@ -38,4 +39,17 @@ func CountMaildirNew(maildir string) (int, error) {
 		count++
 	}
 	return count, nil
+}
+
+func expandHome(p string) string {
+	if strings.HasPrefix(p, "~/") {
+		return path.Join(os.Getenv("HOME"), p[2:])
+	}
+	if strings.HasPrefix(p, "~") {
+		return path.Join(os.Getenv("HOME"), p[1:])
+	}
+	if !strings.HasPrefix(p, "/") {
+		return path.Join(os.Getenv("HOME"), p)
+	}
+	return p
 }

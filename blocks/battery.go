@@ -9,7 +9,6 @@ import (
 )
 
 const (
-	BatteryPath     = "/sys/class/power_supply/BAT0"
 	LowBatteryWarn  = 25
 	CriticalBattery = 10
 )
@@ -24,7 +23,8 @@ var statusIcons = map[string]string{
 }
 
 func BlockBattery() string {
-	capacity, status, err := GetBattery(BatteryPath)
+	cfg := getConfig()
+	capacity, status, err := GetBattery(cfg.BatteryPath)
 	if err != nil {
 		return ""
 	}

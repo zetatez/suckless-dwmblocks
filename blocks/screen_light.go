@@ -17,7 +17,8 @@ func BlockScreenLight() string {
 }
 
 func GetScreenLight() (float64, error) {
-	ents, err := os.ReadDir("/sys/class/backlight")
+	backlightPath := "/sys/class/backlight"
+	ents, err := os.ReadDir(backlightPath)
 	if err != nil {
 		return 0, err
 	}
@@ -25,8 +26,8 @@ func GetScreenLight() (float64, error) {
 		return 0, fmt.Errorf("no backlight device")
 	}
 	dev := ents[0].Name()
-	brightnessPath := filepath.Join("/sys/class/backlight", dev, "brightness")
-	maxPath := filepath.Join("/sys/class/backlight", dev, "max_brightness")
+	brightnessPath := filepath.Join(backlightPath, dev, "brightness")
+	maxPath := filepath.Join(backlightPath, dev, "max_brightness")
 
 	b, err := os.ReadFile(brightnessPath)
 	if err != nil {
