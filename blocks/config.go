@@ -8,7 +8,7 @@ type Config struct {
 
 var blockConfig = Config{
 	BatteryPath:  "/sys/class/power_supply/BAT0",
-	EmailDir:     ".mail/inbox",
+	EmailDir:     "~/.mail/inbox",
 	NetInterface: "wlan0",
 }
 
