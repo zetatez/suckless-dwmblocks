@@ -1,11 +1,12 @@
 package main
 
 import (
-	"dwmblocks/blocks"
 	"time"
+
+	"dwmblocks/blocks"
 )
 
-var Delim = " "
+var Delim = "  "
 
 var Blocks = []Block{
 	// {Interval: 400 * time.Millisecond, Func: blocks.BlockNews},
