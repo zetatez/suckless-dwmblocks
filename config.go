@@ -8,16 +8,6 @@ import (
 
 var Delim = "  "
 
-type Config = blocks.Config
-
-var DefaultConfig = Config{
-	BatteryPath:  "/sys/class/power_supply/BAT0",
-	EmailDir:     "~/.mail/inbox",
-	NetInterface: "wlan0",
-}
-
-var ConfigPtr = &DefaultConfig
-
 var Blocks = []Block{
 	// {Interval: 400 * time.Millisecond, Func: blocks.BlockNews},
 	{Interval: 5 * time.Second, Func: blocks.BlockProcs},
@@ -38,5 +28,11 @@ var Blocks = []Block{
 }
 
 func init() {
-	blocks.SetConfig(DefaultConfig)
+	blocks.SetConfig(
+		blocks.Config{
+			BatteryPath:  "/sys/class/power_supply/BAT0",
+			EmailDir:     "~/.mail/inbox",
+			NetInterface: "wlan0",
+		},
+	)
 }
