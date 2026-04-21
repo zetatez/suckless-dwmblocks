@@ -1,12 +1,9 @@
 package blocks
 
 import (
-	"fmt"
 	"os"
 	"sort"
 	"strings"
-
-	"github.com/shirou/gopsutil/process"
 )
 
 var concernedProcsIcon = map[string]string{
@@ -29,14 +26,17 @@ var concernedProcsIcon = map[string]string{
 }
 
 func BlockProcs() string {
-	pids, err := process.Pids()
+	procs, err := os.ReadDir("/proc")
 	if err != nil {
 		return "?"
 	}
 
 	running := make(map[string]struct{})
-	for _, pid := range pids {
-		name := getProcName(pid)
+	for _, p := range procs {
+		if !p.IsDir() {
+			continue
+		}
+		name := getProcName(p.Name())
 		if name == "" {
 			continue
 		}
@@ -57,8 +57,8 @@ func BlockProcs() string {
 	return "< " + strings.Join(icons, " ") + " >"
 }
 
-func getProcName(pid int32) string {
-	data, err := os.ReadFile(fmt.Sprintf("/proc/%d/comm", pid))
+func getProcName(pid string) string {
+	data, err := os.ReadFile("/proc/" + pid + "/comm")
 	if err != nil {
 		return ""
 	}
