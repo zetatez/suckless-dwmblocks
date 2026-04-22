@@ -6,11 +6,21 @@ import (
 	"dwmblocks/blocks"
 )
 
+func init() {
+	blocks.SetConfig(
+		blocks.Config{
+			BatteryPath:  "/sys/class/power_supply/BAT0",
+			EmailDir:     "~/.mail/inbox",
+			NetInterface: "wlan0",
+		},
+	)
+}
+
 var Delim = "  "
 
 var Blocks = []Block{
 	// {Interval: 400 * time.Millisecond, Func: blocks.BlockNews},
-	{Interval: 10 * time.Second, Func: blocks.BlockProcs},
+	{Interval: 15 * time.Second, Func: blocks.BlockProcs},
 	// {Interval: 15 * time.Minute, Func: blocks.BlockWeather},
 	// {Interval: 15 * time.Minute, Func: blocks.BlockEmail},
 	// {Interval: 3 * time.Second, Func: blocks.BlockBluetoothConnectedDevices},
@@ -22,17 +32,7 @@ var Blocks = []Block{
 	{Interval: 3 * time.Second, Func: blocks.BlockCPU},
 	{Interval: 3 * time.Second, Func: blocks.BlockMem},
 	{Interval: 1 * time.Second, Func: blocks.BlockInputMethod},
-	{Interval: 1 * time.Minute, Func: blocks.BlockBattery},
+	{Interval: 3 * time.Second, Func: blocks.BlockBattery},
 	{Interval: 3 * time.Second, Func: blocks.BlockNet},
 	{Interval: 1 * time.Second, Func: blocks.BlockTime},
-}
-
-func init() {
-	blocks.SetConfig(
-		blocks.Config{
-			BatteryPath:  "/sys/class/power_supply/BAT0",
-			EmailDir:     "~/.mail/inbox",
-			NetInterface: "wlan0",
-		},
-	)
 }

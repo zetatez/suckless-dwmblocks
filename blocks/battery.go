@@ -17,7 +17,7 @@ var statusIcons = map[string]string{
 	"Full":         "󰂅",
 	"Discharging":  "",
 	"Charging":     "",
-	"Not charging": "󰢟",
+	"Not charging": "󰚥",
 	"Unknown":      "󰂑",
 	"Warning":      "",
 }
