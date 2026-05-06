@@ -20,10 +20,10 @@ var Delim = "  "
 
 var Blocks = []Block{
 	// {Interval: 400 * time.Millisecond, Func: blocks.BlockNews},
-	{Interval: 15 * time.Second, Func: blocks.BlockProcs},
+	// {Interval: 15 * time.Second, Func: blocks.BlockProcs},
 	// {Interval: 15 * time.Minute, Func: blocks.BlockWeather},
 	// {Interval: 15 * time.Minute, Func: blocks.BlockEmail},
-	// {Interval: 3 * time.Second, Func: blocks.BlockBluetoothConnectedDevices},
+	{Interval: 3 * time.Second, Func: blocks.BlockBluetoothConnectedDevices},
 	{Interval: 1 * time.Second, Func: blocks.BlockVol},
 	{Interval: 1 * time.Second, Func: blocks.BlockMicro},
 	{Interval: 1 * time.Second, Func: blocks.BlockScreenLight},
